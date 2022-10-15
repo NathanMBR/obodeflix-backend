@@ -1,15 +1,13 @@
 {
-  "name": "typescript-setup",
+  "name": "obodeflix-backend",
   "version": "1.0.0",
-  "description": "Base setup for TypeScript projects",
+  "description": "OBODEflix Backend",
   "main": "./build/index.js",
-  "repository": "https://github.com/NathanMBR/typescript-setup.git",
+  "repository": "https://github.com/NathanMBR/obodeflix-backend",
   "author": "Nathan Murillo <nathanmurillodeoliveira@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "eject": "node ./eject",
     "postinstall": "husky install",
-    "test": "jest --verbose --passWithNoTests --runInBand",
     "build": "concurrently yarn:build:*",
     "lint": "eslint --fix",
     "build:types": "tsc -p tsconfig.build.json",
