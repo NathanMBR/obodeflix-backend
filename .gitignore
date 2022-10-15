@@ -1,0 +1,7 @@
+build/
+node_modules/
+private/
+test/coverage/
+*.env
+!.example.env
+*.log

@@ -1,0 +1,51 @@
+{
+  "name": "typescript-setup",
+  "version": "1.0.0",
+  "description": "Base setup for TypeScript projects",
+  "main": "./build/index.js",
+  "repository": "https://github.com/NathanMBR/typescript-setup.git",
+  "author": "Nathan Murillo <nathanmurillodeoliveira@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "eject": "node ./eject",
+    "postinstall": "husky install",
+    "test": "jest --verbose --passWithNoTests --runInBand",
+    "build": "concurrently yarn:build:*",
+    "lint": "eslint --fix",
+    "build:types": "tsc -p tsconfig.build.json",
+    "build:compile": "babel src --extensions .ts --out-dir build --source-maps --copy-files --no-copy-ignored",
+    "start": "node --enable-source-maps .",
+    "start:dev": "node -r dotenv/config --enable-source-maps .",
+    "qs": "yarn build && yarn start:dev"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.18.6",
+    "@babel/core": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "concurrently": "^7.2.2",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@swc/core": "^1.2.211",
+    "@swc/jest": "^0.2.21",
+    "@types/babel__core": "^7.1.19",
+    "@types/babel__preset-env": "^7.9.2",
+    "@types/eslint": "^8.4.5",
+    "@types/jest": "^28.1.4",
+    "@types/node": "^18.0.3",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^8.19.0",
+    "eslint-plugin-jest": "^26.5.3",
+    "husky": "^8.0.1",
+    "jest": "^28.1.2",
+    "lint-staged": "^13.0.3",
+    "supertest": "^6.2.4",
+    "ts-node": "^10.8.2"
+  }
+}

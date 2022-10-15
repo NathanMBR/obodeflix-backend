@@ -1,0 +1,29 @@
+{
+	"include": ["./src"],
+	"exclude": ["./test", "./node_modules", "./build"],
+	"compilerOptions": {
+	  "target": "es2020",
+	  "experimentalDecorators": true,
+	  "module": "commonjs",
+	  "rootDir": "./src",
+	  "paths": {
+		"@/*": ["./src/*"],
+		"@test/*": ["./test/*"]
+	  },
+	  "emitDeclarationOnly": true,
+	  "sourceMap": true,
+	  "outDir": "./build",
+	  "declaration": true,
+	  "esModuleInterop": true,
+	  "forceConsistentCasingInFileNames": true,
+	  "strict": true,
+	  "noImplicitAny": false,
+	  "noUnusedLocals": true,
+	  "noUnusedParameters": true,
+	  "strictFunctionTypes": true,
+	  "noImplicitReturns": false,
+	  "noImplicitUseStrict": false,
+	  "skipLibCheck": true
+	}
+  }
+  

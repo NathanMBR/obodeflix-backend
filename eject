@@ -1,0 +1,89 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const fs = require("fs/promises");
+const path = require("path");
+const { existsSync } = require("fs");
+
+const getArgs = () => process.argv
+    .filter((value, index) => index >= 2 && value.match("--"))
+    .map(arg => arg.split("=").filter((_argValue, argIndex) => argIndex <= 1))
+    .map(
+        arg => {
+            const object = {};
+            const value = arg[1] === undefined || arg[1] === "true"
+                ? true
+                : arg[1] === "false"
+                    ? false
+                    : (!Number.isNaN(Number(`${arg[1]}`)) && arg[1] !== "")
+                        ? Number(`${arg[1]}`)
+                        : arg[1];
+
+            object[`${arg[0].split("--")[1]}`] = value;
+            return object;
+        }
+    )
+    .reduce((previousArg, currentArg) => Object.assign(previousArg, currentArg), {});
+
+const excludePath = async (...pathArgs) => {
+    const pathToExclude = path.resolve(__dirname, ...pathArgs);
+
+    if (existsSync(pathToExclude))
+        await fs.rm(pathToExclude, { recursive: true });
+};
+
+const getAllFolderFiles = async folder => (await fs.readdir(path.resolve(__dirname, folder), { withFileTypes: true }))
+    .map(file => file.name);
+
+const deleteFilesFromFolder = async folder => {
+    const filesToDelete = await getAllFolderFiles(folder);
+    await Promise.all(
+        filesToDelete.map(file => excludePath(folder, file))
+    );
+};
+
+const eject = async () => {
+    try {
+        const ejectScriptFileName = path.basename(__filename);
+        const pkgPath = path.resolve(__dirname, "package.json");
+        const pkgBuffer = await fs.readFile(pkgPath);
+        const pkg = JSON.parse(pkgBuffer.toString());
+        const args = getArgs();
+
+        if (pkg?.scripts?.eject)
+            delete pkg.scripts.eject;
+
+        if (pkg?.name)
+            pkg.name = "";
+
+        if (pkg?.description)
+            pkg.description = "";
+
+        if (pkg?.repository)
+            pkg.repository = "";
+
+        if (pkg?.author)
+            pkg.author = "";
+
+        await fs.writeFile(pkgPath, JSON.stringify(pkg, undefined, 2));
+
+        const foldersToDeleteContent = [
+            "src",
+            "test"
+        ];
+        await Promise.all(foldersToDeleteContent.map(deleteFilesFromFolder));
+
+        if (args["remove-git-folder"] === true)
+            await excludePath("./.git");
+
+        await excludePath("README.md");
+        await excludePath("./node_modules");
+        await excludePath(ejectScriptFileName);
+    } catch (error) {
+        /* eslint-disable-next-line no-console */
+        console.error(error instanceof Error ? error.stack : error);
+        process.exitCode = 1;
+    } finally {
+        process.exit();
+    }
+};
+
+eject();

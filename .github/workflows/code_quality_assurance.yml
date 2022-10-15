@@ -1,0 +1,23 @@
+name: Code quality assurance workflow
+on:
+  push:
+    branches:
+      - development
+  pull_request:
+    branches:
+      - master
+      - development
+jobs:
+  publish:
+    name: Linting and testing
+    runs-on: ubuntu-latest
+    container: node:16.16.0-alpine3.15
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+      - name: Install packages
+        run: yarn install --ignore-scripts
+      - name: Ensure linting quality
+        run: yarn lint
+      - name: Ensure testing quality
+        run: yarn test --passWithNoTests

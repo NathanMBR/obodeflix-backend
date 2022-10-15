@@ -1,0 +1,160 @@
+{
+    "env": {
+        "es2021": false,
+        "es2020": true,
+        "node": true,
+        "jest": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "globals": {
+        "NodeJS": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "jest"
+    ],
+    "rules": {
+        "object-curly-spacing": [
+            "error",
+            "always",
+            {
+                "arraysInObjects": true
+            }
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1
+            }
+        ],
+        "no-trailing-spaces": [
+            "error",
+            {
+                "ignoreComments": false
+            }
+        ],
+        "space-before-function-paren": [
+            "error",
+            {
+                "anonymous": "never",
+                "named": "never",
+                "asyncArrow": "always"
+            }
+        ],
+        "valid-typeof": [
+            "error",
+            {
+                "requireStringLiterals": true
+            }
+        ],
+        "camelcase": [
+            "error",
+            {
+                "ignoreDestructuring": true,
+                "ignoreImports": true,
+                "ignoreGlobals": true
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "varsIgnorePattern": "^_",
+                "argsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/indent": [
+            "error",
+            4
+        ],
+        "@typescript-eslint/member-delimiter-style": [
+            "error",
+            {
+                "multiline": {
+                    "delimiter": "semi",
+                    "requireLast": true
+                },
+                "singleline": {
+                    "delimiter": "semi",
+                    "requireLast": false
+                },
+                "multilineDetection": "brackets"
+            }
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "curly": [
+            "error",
+            "multi"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "eqeqeq": [
+            "error",
+            "always"
+        ],
+        "padded-blocks": [
+            "error",
+            "never"
+        ],
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
+        "func-names": [
+            "error",
+            "never"
+        ],
+        "eol-last": [
+            "error",
+            "never"
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "no-var": "error",
+        "prefer-const": "error",
+        "no-useless-concat": "error",
+        "default-case": "error",
+        "no-await-in-loop": "error",
+        "no-dupe-keys": "error",
+        "no-duplicate-imports": "error",
+        "no-func-assign": "error",
+        "no-invalid-regexp": "error",
+        "no-loss-of-precision": "error",
+        "no-new-symbol": "error",
+        "no-self-assign": "error",
+        "no-multi-spaces": "error",
+        "no-self-compare": "error",
+        "no-setter-return": "error",
+        "no-sparse-arrays": "error",
+        "no-this-before-super": "error",
+        "no-undef": "error",
+        "no-unmodified-loop-condition": "error",
+        "no-unsafe-negation": "error",
+        "no-unused-private-class-members": "error",
+        "no-use-before-define": "error",
+        "no-eval": "error",
+        "use-isnan": "error",
+        "no-console": "warn",
+        "linebreak-style": "off",
+        "no-inner-declarations": "off",
+        "no-mixed-spaces-and-tabs": "off",
+        "no-promise-executor-return": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-namespace": "off"
+    }
+}
