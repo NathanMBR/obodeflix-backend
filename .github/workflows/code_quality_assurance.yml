@@ -19,5 +19,3 @@ jobs:
         run: yarn install --ignore-scripts
       - name: Ensure linting quality
         run: yarn lint
-      - name: Ensure testing quality
-        run: yarn test --passWithNoTests
