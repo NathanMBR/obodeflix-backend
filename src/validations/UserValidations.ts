@@ -1,8 +1,8 @@
 import { z as zod } from "zod";
 
+/* eslint-disable camelcase */
 export class UserValidations {
     create(userData: any) {
-        /* eslint-disable camelcase */
         const createUserSchema = zod.object(
             {
                 name: zod
@@ -38,8 +38,37 @@ export class UserValidations {
                     .min(8, "The password must have a minimum of 8 characters")
             }
         );
-        /* eslint-enable camelcase */
 
         return createUserSchema.safeParse(userData);
     }
+
+    authenticate(userData: any) {
+        const authenticateUserSchema = zod.object(
+            {
+                email: zod
+                    .string(
+                        {
+                            required_error: "The email is required",
+                            invalid_type_error: "The email must be a string",
+                            description: "The user email"
+                        }
+                    )
+                    .email("The email must be in a valid format")
+                    .max(255, "The email must have a maximum of 255 characters"),
+
+                password: zod
+                    .string(
+                        {
+                            required_error: "The password is required",
+                            invalid_type_error: "The password must be a string",
+                            description: "The user password"
+                        }
+                    )
+                    .min(8, "The password must have a minimum of 8 characters")
+            }
+        );
+
+        return authenticateUserSchema.safeParse(userData);
+    }
 }
+/* eslint-enable camelcase */
