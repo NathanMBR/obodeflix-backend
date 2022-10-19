@@ -27,33 +27,39 @@ enum SeriesNameLanguages {
 }
 
 model User {
-  id        Int       @id @default(autoincrement()) @db.Integer
-  name      String    @db.VarChar(255)
-  email     String    @db.VarChar(255)
-  password  String    @db.VarChar(255)
-  type      UserTypes
+  id Int @id @default(autoincrement()) @db.Integer
+
+  name     String    @db.VarChar(255)
+  email    String    @db.VarChar(255)
+  password String    @db.VarChar(255)
+  type     UserTypes
+
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   deletedAt DateTime? @db.Timestamptz()
 }
 
 model Series {
-  id               Int                 @id @default(autoincrement()) @db.Integer
+  id Int @id @default(autoincrement()) @db.Integer
+
   mainName         String              @db.VarChar(255)
   alternativeName  String?             @db.VarChar(255)
   mainNameLanguage SeriesNameLanguages
   description      String?             @db.Text
-  createdAt        DateTime            @default(now()) @db.Timestamptz()
-  updatedAt        DateTime            @default(now()) @updatedAt @db.Timestamptz()
-  deletedAt        DateTime?           @db.Timestamptz()
+
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
+  deletedAt DateTime? @db.Timestamptz()
 
   seriesTags SeriesTags[]
   seasons    Season[]
 }
 
 model Tag {
-  id        Int       @id @default(autoincrement()) @db.Integer
-  name      String    @db.VarChar(255)
+  id Int @id @default(autoincrement()) @db.Integer
+
+  name String @db.VarChar(255)
+
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   deletedAt DateTime? @db.Timestamptz()
@@ -62,9 +68,11 @@ model Tag {
 }
 
 model SeriesTags {
-  id        Int       @id @default(autoincrement()) @db.Integer
-  seriesId  Int       @db.Integer
-  tagId     Int       @db.Integer
+  id Int @id @default(autoincrement()) @db.Integer
+
+  seriesId Int @db.Integer
+  tagId    Int @db.Integer
+
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   deletedAt DateTime? @db.Timestamptz()
@@ -74,24 +82,28 @@ model SeriesTags {
 }
 
 model Season {
-  id        Int         @id @default(autoincrement()) @db.Integer
-  name      String      @db.VarChar(255)
-  type      SeasonTypes
-  seriesId  Int         @db.Integer
-  position  Int         @db.Integer
-  createdAt DateTime    @default(now()) @db.Timestamptz()
-  updatedAt DateTime    @default(now()) @updatedAt @db.Timestamptz()
-  deletedAt DateTime?   @db.Timestamptz()
+  id Int @id @default(autoincrement()) @db.Integer
+
+  name     String      @db.VarChar(255)
+  type     SeasonTypes
+  seriesId Int         @db.Integer
+  position Int         @db.Integer
+
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
+  deletedAt DateTime? @db.Timestamptz()
 
   series   Series    @relation(fields: [seriesId], references: [id])
   episodes Episode[]
 }
 
 model Episode {
-  id        Int       @id @default(autoincrement()) @db.Integer
-  name      String    @db.VarChar(255)
-  seasonId  Int       @db.Integer
-  duration  Int       @db.Integer
+  id Int @id @default(autoincrement()) @db.Integer
+
+  name     String @db.VarChar(255)
+  seasonId Int    @db.Integer
+  duration Int    @db.Integer
+
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   deletedAt DateTime? @db.Timestamptz()
