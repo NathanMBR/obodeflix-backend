@@ -1,12 +1,19 @@
 import { Router } from "express";
-import { hash } from "bcryptjs";
+import {
+    hash,
+    compare
+} from "bcryptjs";
+import { sign } from "jsonwebtoken";
 
 import { UserRepository } from "@/repositories";
+import { prisma } from "@/database";
 import { UserValidations } from "@/validations";
 import { ValidationError } from "@/errors";
+import { SECRET } from "@/config";
 import {
     handleZodError,
-    handleControllerError
+    handleControllerError,
+    removeProperty
 } from "@/helpers";
 
 const userRoutes = Router();
@@ -39,6 +46,68 @@ userRoutes.post(
             );
 
             return response.status(201).json(user);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
+userRoutes.post(
+    "/user/authenticate",
+    async (request, response) => {
+        try {
+            const emailOrPasswordInvalidMessage = "The email or password is invalid";
+            const rawUserData = request.body;
+
+            const validation = userValidations.authenticate(rawUserData);
+            if (!validation.success)
+                return response.status(400).json(
+                    new ValidationError(handleZodError(validation.error))
+                );
+
+            const userData = validation.data;
+
+            const doesUserExists = await prisma.user.findFirst(
+                {
+                    where: {
+                        email: userData.email,
+                        deletedAt: null
+                    }
+                }
+            );
+
+            if (!doesUserExists)
+                return response.status(400).json(
+                    new ValidationError([emailOrPasswordInvalidMessage])
+                );
+
+            const doesPasswordMatch = await compare(userData.password, doesUserExists.password);
+
+            if (!doesPasswordMatch)
+                return response.status(400).json(
+                    new ValidationError([emailOrPasswordInvalidMessage])
+                );
+
+            const token = sign(
+                {
+                    sub: doesUserExists.id
+                },
+
+                SECRET,
+
+                {
+                    expiresIn: "7d"
+                }
+            );
+
+            const user = removeProperty(doesUserExists, "password");
+
+            return response.status(200).json(
+                {
+                    token,
+                    user
+                }
+            );
         } catch (error) {
             return handleControllerError(error, response);
         }
