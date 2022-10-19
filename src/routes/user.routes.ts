@@ -5,7 +5,6 @@ import {
 } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
-import { UserRepository } from "@/repositories";
 import { prisma } from "@/database";
 import { UserValidations } from "@/validations";
 import { ValidationError } from "@/errors";
@@ -19,7 +18,6 @@ import {
 const userRoutes = Router();
 
 const userValidations = new UserValidations();
-const userRepository = new UserRepository();
 
 userRoutes.post(
     "/user/create",
@@ -37,11 +35,13 @@ userRoutes.post(
 
             const password = await hash(userData.password, 16);
 
-            const user = await userRepository.create(
+            const user = await prisma.user.create(
                 {
-                    ...userData,
-                    password,
-                    type: "COMMON"
+                    data: {
+                        ...userData,
+                        password,
+                        type: "COMMON"
+                    }
                 }
             );
 
@@ -82,7 +82,6 @@ userRoutes.post(
                 );
 
             const doesPasswordMatch = await compare(userData.password, doesUserExists.password);
-
             if (!doesPasswordMatch)
                 return response.status(400).json(
                     new ValidationError([emailOrPasswordInvalidMessage])
