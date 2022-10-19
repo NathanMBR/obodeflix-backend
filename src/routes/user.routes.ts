@@ -117,6 +117,54 @@ userRoutes.post(
     }
 );
 
+userRoutes.get(
+    "/user/get",
+    ensureAuthentication,
+    async (request, response) => {
+        try {
+            const authenticationData = request.user;
+            if (!authenticationData) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected user authentication at update user route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const userId = authenticationData.sub;
+            const userData = request.body;
+
+            const validation = userValidations.update(userData);
+            if (!validation.success)
+                return response.status(400).json(
+                    new ValidationError(handleZodError(validation.error))
+                );
+
+            const unsafeUser = await prisma.user.findFirst(
+                {
+                    where: {
+                        id: userId,
+                        deletedAt: null
+                    }
+                }
+            );
+            if (!unsafeUser) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected existent user at update user route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const user = removeProperty(unsafeUser, "password");
+
+            return response.status(200).json(user);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
 userRoutes.put(
     "/user/update",
     ensureAuthentication,
