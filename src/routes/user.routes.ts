@@ -7,13 +7,17 @@ import { sign } from "jsonwebtoken";
 
 import { prisma } from "@/database";
 import { UserValidations } from "@/validations";
-import { ValidationError } from "@/errors";
+import {
+    ValidationError,
+    InternalServerError
+} from "@/errors";
 import { SECRET } from "@/config";
 import {
     handleZodError,
     handleControllerError,
     removeProperty
 } from "@/helpers";
+import { ensureAuthentication } from "@/middlewares";
 
 const userRoutes = Router();
 
@@ -107,6 +111,64 @@ userRoutes.post(
                     user
                 }
             );
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
+userRoutes.put(
+    "/user/update",
+    ensureAuthentication,
+    async (request, response) => {
+        try {
+            const authenticationData = request.user;
+            if (!authenticationData) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected user authentication at update user route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const userId = authenticationData.sub;
+            const userData = request.body;
+
+            const validation = userValidations.update(userData);
+            if (!validation.success)
+                return response.status(400).json(
+                    new ValidationError(handleZodError(validation.error))
+                );
+
+            const doesUserExist = await prisma.user.findFirst(
+                {
+                    where: {
+                        id: userId,
+                        deletedAt: null
+                    }
+                }
+            );
+            if (!doesUserExist) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected existent user at update user route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const unsafeUser = await prisma.user.update(
+                {
+                    where: {
+                        id: userId
+                    },
+
+                    data: validation.data
+                }
+            );
+
+            const user = removeProperty(unsafeUser, "password");
+
+            return response.status(200).json(user);
         } catch (error) {
             return handleControllerError(error, response);
         }
