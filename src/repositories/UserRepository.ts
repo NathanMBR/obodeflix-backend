@@ -1,7 +1,10 @@
 import { prisma } from "@/database";
 import { RepositoryContract } from "@/interfaces";
 
-import { User } from "@prisma/client";
+import {
+    User,
+    Prisma
+} from "@prisma/client";
 
 const userPropertiesAvailableToSearch: Array<keyof User> = [
     "name",
@@ -9,7 +12,7 @@ const userPropertiesAvailableToSearch: Array<keyof User> = [
 ];
 
 export class UserRepository implements RepositoryContract<User> {
-    async create(userData: User) {
+    async create(userData: Prisma.UserCreateInput) {
         const user = await prisma.user.create(
             {
                 data: userData
@@ -19,7 +22,7 @@ export class UserRepository implements RepositoryContract<User> {
         return user;
     }
 
-    async findOneBy(prop: keyof User, value: User[typeof prop]) {
+    async findOneBy(prop: keyof Prisma.UserWhereInput, value: Prisma.UserWhereInput[typeof prop]) {
         const user = await prisma.user.findFirst(
             {
                 where: {
@@ -116,7 +119,7 @@ export class UserRepository implements RepositoryContract<User> {
         return usersCount;
     }
 
-    async update(id: number, userData: User) {
+    async update(id: number, userData: Prisma.UserUpdateInput) {
         const doesUserExist = await prisma.user.findFirst(
             {
                 where: {
