@@ -10,7 +10,8 @@ import {
 } from "@/errors";
 import {
     handleZodError,
-    handleControllerError
+    handleControllerError,
+    getPaginatedData
 } from "@/helpers";
 
 const seriesRoutes = Router();
@@ -144,6 +145,103 @@ seriesRoutes.get(
                 );
 
             return response.status(200).json(series);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
+seriesRoutes.get(
+    "/series/all",
+    async (request, response) => {
+        try {
+            const rawPaginationData = {
+                page: Number(request.query.page),
+                quantity: Number(request.query.quantity),
+                orderColumn: String(request.query.orderColumn),
+                orderBy: String(request.query.orderBy),
+                search: String(request.query.search || "")
+            };
+
+            const {
+                take,
+                skip,
+                orderColumn,
+                orderBy,
+                search
+            } = seriesValidations.findAll(rawPaginationData);
+
+            const [
+                series,
+                seriesCount
+            ] = await Promise.all(
+                [
+                    prisma.series.findMany(
+                        {
+                            take,
+                            skip,
+
+                            where: {
+                                OR: [
+                                    {
+                                        mainName: {
+                                            contains: search
+                                        }
+                                    },
+
+                                    {
+                                        alternativeName: {
+                                            contains: search
+                                        }
+                                    }
+                                ],
+
+                                deletedAt: null
+                            },
+
+                            orderBy: {
+                                [orderColumn]: orderBy
+                            }
+                        }
+                    ),
+
+                    prisma.series.count(
+                        {
+                            take,
+                            skip,
+
+                            where: {
+                                OR: [
+                                    {
+                                        mainName: {
+                                            contains: search
+                                        }
+                                    },
+
+                                    {
+                                        alternativeName: {
+                                            contains: search
+                                        }
+                                    }
+                                ],
+
+                                deletedAt: null
+                            }
+                        }
+                    )
+                ]
+            );
+
+            const paginatedSeries = getPaginatedData(
+                {
+                    take,
+                    skip,
+                    count: seriesCount,
+                    data: series
+                }
+            );
+
+            return response.status(200).json(paginatedSeries);
         } catch (error) {
             return handleControllerError(error, response);
         }
