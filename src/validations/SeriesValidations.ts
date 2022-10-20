@@ -52,12 +52,18 @@ export class SeriesValidations {
 
                 tags: zod
                     .array(
-                        zod.string(
+                        zod.number(
                             {
-                                invalid_type_error: "The tag must be a string",
+                                invalid_type_error: "The tag must be a number",
                                 description: "The series tag"
                             }
-                        )
+                        ),
+
+                        {
+                            required_error: "The series tags are required",
+                            invalid_type_error: "The series tags must be a number array",
+                            description: "The series tags"
+                        }
                     )
             }
         );
