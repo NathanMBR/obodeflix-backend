@@ -1,0 +1,1 @@
+export const removeRepeatedElements = (array: Array<any>) => Array.from(new Set(array));
