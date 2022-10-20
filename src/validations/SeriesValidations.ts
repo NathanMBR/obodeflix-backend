@@ -1,5 +1,7 @@
 import { z as zod } from "zod";
 
+import { removeRepeatedElements } from "@/helpers";
+
 /* eslint-disable camelcase */
 export class SeriesValidations {
     create(seriesData: any) {
@@ -65,6 +67,7 @@ export class SeriesValidations {
                             description: "The series tags"
                         }
                     )
+                    .transform(removeRepeatedElements)
             }
         );
 
