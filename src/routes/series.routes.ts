@@ -99,4 +99,55 @@ seriesRoutes.post(
     }
 );
 
+seriesRoutes.get(
+    "/series/get/:id",
+    async (request, response) => {
+        try {
+            const rawSeriesId = Number(request.params.id);
+
+            const validation = seriesValidations.findOne(
+                {
+                    id: rawSeriesId
+                }
+            );
+            if (!validation.success)
+                return response.status(400).json(
+                    new ValidationError(handleZodError(validation.error))
+                );
+
+            const seriesId = validation.data.id;
+            const series = await prisma.series.findFirst(
+                {
+                    where: {
+                        id: seriesId,
+                        deletedAt: null
+                    },
+
+                    include: {
+                        seasons: {
+                            include: {
+                                episodes: true
+                            }
+                        },
+
+                        seriesTags: {
+                            include: {
+                                tag: true
+                            }
+                        }
+                    }
+                }
+            );
+            if (!series)
+                return response.status(404).json(
+                    new NotFoundError("Series not found")
+                );
+
+            return response.status(200).json(series);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
 export { seriesRoutes };
