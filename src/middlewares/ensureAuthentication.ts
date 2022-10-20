@@ -38,6 +38,15 @@ export const ensureAuthentication = (
             );
 
         const userData = verify(token, SECRET);
+
+        if (typeof userData === "string") {
+            /* eslint-disable-next-line no-console */
+            console.error("Expected user data in object format at authentication middleware");
+            return response.status(500).json(
+                new InternalServerError()
+            );
+        }
+
         const userId = Number(userData.sub);
 
         if (Number.isNaN(userId)) {
@@ -50,7 +59,8 @@ export const ensureAuthentication = (
         }
 
         request.user = {
-            sub: userId
+            sub: userId,
+            type: userData.type
         };
 
         return next();
