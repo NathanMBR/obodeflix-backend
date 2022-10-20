@@ -1,6 +1,9 @@
 import { z as zod } from "zod";
 
-import { removeRepeatedElements } from "@/helpers";
+import {
+    removeRepeatedElements,
+    getPaginationParameters
+} from "@/helpers";
 
 /* eslint-disable camelcase */
 export class SeriesValidations {
@@ -93,73 +96,45 @@ export class SeriesValidations {
         return findOneSeriesSchema.safeParse(seriesData);
     }
 
-    findAll(seriesData: any) {
-        const findAllSeriesSchema = zod.object(
-            {
-                page: zod
-                    .number(
-                        {
-                            invalid_type_error: "The series page must be a number",
-                            description: "The page of the series data"
-                        }
-                    )
-                    .int("The series page must be an integer")
-                    .positive("The series page must be positive")
-                    .optional(),
+    findAll(
+        seriesData: {
+            page: number;
+            quantity: number;
+            orderColumn: string;
+            orderBy: string;
+            search: string;
+        }
+    ) {
+        const availableOrders = [
+            "asc",
+            "desc"
+        ];
 
-                quantity: zod
-                    .number(
-                        {
-                            invalid_type_error: "The series quantity must be a number",
-                            description: "The quantity of series to be returned"
-                        }
-                    )
-                    .int("The series quantity must be an integer")
-                    .positive("The series quantity must be positive")
-                    .optional(),
+        const columnsToOrderBy = [
+            "id",
+            "mainName",
+            "updatedAt"
+        ];
 
-                orderColumn: zod
-                    .enum(
-                        [
-                            "id",
-                            "mainName",
-                            "updatedAt"
-                        ],
+        const { take, skip } = getPaginationParameters(seriesData.page, seriesData.quantity);
 
-                        {
-                            invalid_type_error: "The order column must be a string",
-                            description: "The column to order by"
-                        }
-                    )
-                    .optional(),
+        const orderColumn = columnsToOrderBy.includes(seriesData.orderColumn)
+            ? seriesData.orderColumn
+            : undefined;
 
-                orderBy: zod
-                    .enum(
-                        [
-                            "asc",
-                            "desc"
-                        ],
+        const orderBy = availableOrders.includes(seriesData.orderBy)
+            ? seriesData.orderBy
+            : "asc";
 
-                        {
-                            required_error: "The order direction is required",
-                            invalid_type_error: "The order direction must be a text",
-                            description: "The order direction"
-                        }
-                    ),
+        const { search } = seriesData;
 
-                search: zod
-                    .string(
-                        {
-                            required_error: "The search query is required",
-                            invalid_type_error: "The search query must be a string",
-                            description: "The search query"
-                        }
-                    )
-                    .max(255, "The search query is too long (must have a maximum of 255 characters)")
-            }
-        );
-
-        return findAllSeriesSchema.safeParse(seriesData);
+        return {
+            take,
+            skip,
+            orderColumn,
+            orderBy,
+            search
+        };
     }
 }
 /* eslint-enable camelcase */
