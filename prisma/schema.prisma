@@ -68,6 +68,8 @@ model Tag {
 }
 
 model SeriesTags {
+  id Int @id @default(autoincrement()) @db.Integer
+
   seriesId Int @db.Integer
   tagId    Int @db.Integer
 
@@ -77,8 +79,6 @@ model SeriesTags {
 
   series Series @relation(fields: [seriesId], references: [id])
   tag    Tag    @relation(fields: [tagId], references: [id])
-
-  @@id([seriesId, tagId])
 }
 
 model Season {
