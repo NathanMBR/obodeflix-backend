@@ -1,8 +1,8 @@
 import { app } from "./server";
-
-const port = 3000;
+import { PORT } from "@/config";
 
 app.listen(
-    port,
-    () => console.log(`Server running on port ${port}`)
+    PORT,
+    /* eslint-disable no-console */
+    () => console.log(`Server running on port ${PORT}`)
 );
