@@ -5,12 +5,19 @@ interface PaginationParameters {
     data: Array<any>;
 }
 
-export const getPaginatedDataHelper = (paginationParameters: PaginationParameters) => (
+export const getPaginatedDataHelper = (
     {
-        quantityPerPage: paginationParameters.take,
-        totalQuantity: paginationParameters.count,
-        currentPage: paginationParameters.skip / paginationParameters.take + 1,
-        lastPage: Math.ceil(paginationParameters.count / paginationParameters.take),
-        data: paginationParameters.data
+        take,
+        count,
+        skip,
+        data
+    }: PaginationParameters
+) => (
+    {
+        quantityPerPage: take,
+        totalQuantity: count,
+        currentPage: skip / take + 1,
+        lastPage: Math.ceil(count / take),
+        data: data
     }
 );
