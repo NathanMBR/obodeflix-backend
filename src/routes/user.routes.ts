@@ -110,12 +110,13 @@ userRoutes.post(
 
             const token = sign(
                 {
-                    sub: doesUserExists.id
+                    type: doesUserExists.type
                 },
 
                 SECRET,
 
                 {
+                    subject: String(doesUserExists.id),
                     expiresIn: "7d"
                 }
             );
