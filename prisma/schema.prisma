@@ -64,7 +64,7 @@ model Tag {
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   deletedAt DateTime? @db.Timestamptz()
 
-  SeriesTags SeriesTags[]
+  seriesTags SeriesTags[]
 }
 
 model SeriesTags {
