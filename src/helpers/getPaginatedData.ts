@@ -5,7 +5,7 @@ interface PaginationParameters {
     data: Array<any>;
 }
 
-export const getPaginatedDataHelper = (
+export const getPaginatedData = (
     {
         take,
         count,
