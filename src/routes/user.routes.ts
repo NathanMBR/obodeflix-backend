@@ -223,4 +223,55 @@ userRoutes.put(
     }
 );
 
+userRoutes.delete(
+    "/user/delete",
+    ensureAuthentication,
+    async (request, response) => {
+        try {
+            const authenticationData = request.user;
+            if (!authenticationData) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected user authentication at delete user route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const userId = authenticationData.sub;
+
+            const doesUserExist = await prisma.user.findFirst(
+                {
+                    where: {
+                        id: userId,
+                        deletedAt: null
+                    }
+                }
+            );
+            if (!doesUserExist) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected existent user at delete user route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            await prisma.user.update(
+                {
+                    where: {
+                        id: userId
+                    },
+
+                    data: {
+                        deletedAt: new Date()
+                    }
+                }
+            );
+
+            return response.sendStatus(204);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
 export { userRoutes };
