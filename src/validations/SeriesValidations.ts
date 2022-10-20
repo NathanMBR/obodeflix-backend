@@ -92,5 +92,74 @@ export class SeriesValidations {
 
         return findOneSeriesSchema.safeParse(seriesData);
     }
+
+    findAll(seriesData: any) {
+        const findAllSeriesSchema = zod.object(
+            {
+                page: zod
+                    .number(
+                        {
+                            invalid_type_error: "The series page must be a number",
+                            description: "The page of the series data"
+                        }
+                    )
+                    .int("The series page must be an integer")
+                    .positive("The series page must be positive")
+                    .optional(),
+
+                quantity: zod
+                    .number(
+                        {
+                            invalid_type_error: "The series quantity must be a number",
+                            description: "The quantity of series to be returned"
+                        }
+                    )
+                    .int("The series quantity must be an integer")
+                    .positive("The series quantity must be positive")
+                    .optional(),
+
+                orderColumn: zod
+                    .enum(
+                        [
+                            "id",
+                            "mainName",
+                            "updatedAt"
+                        ],
+
+                        {
+                            invalid_type_error: "The order column must be a string",
+                            description: "The column to order by"
+                        }
+                    )
+                    .optional(),
+
+                orderBy: zod
+                    .enum(
+                        [
+                            "asc",
+                            "desc"
+                        ],
+
+                        {
+                            required_error: "The order direction is required",
+                            invalid_type_error: "The order direction must be a text",
+                            description: "The order direction"
+                        }
+                    ),
+
+                search: zod
+                    .string(
+                        {
+                            required_error: "The search query is required",
+                            invalid_type_error: "The search query must be a string",
+                            description: "The search query"
+                        }
+                    )
+                    .max(255, "The search query is too long (must have a maximum of 255 characters)")
+            }
+        );
+
+        return findAllSeriesSchema.safeParse(seriesData);
+    }
 }
 /* eslint-enable camelcase */
