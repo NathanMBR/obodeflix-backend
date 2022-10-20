@@ -37,6 +37,23 @@ userRoutes.post(
 
             const userData = validation.data;
 
+            const doesEmailAlreadyExist = await prisma.user.findFirst(
+                {
+                    select: {
+                        id: true
+                    },
+
+                    where: {
+                        email: userData.email,
+                        deletedAt: null
+                    }
+                }
+            );
+            if (doesEmailAlreadyExist)
+                return response.status(400).json(
+                    new ValidationError(["The email is already in use"])
+                );
+
             const password = await hash(userData.password, 16);
 
             const user = await prisma.user.create(
@@ -150,7 +167,7 @@ userRoutes.get(
             );
             if (!unsafeUser) {
                 /* eslint-disable-next-line no-console */
-                console.error("Expected existent user at update user route");
+                console.error("Expected existent user at find current user route");
                 return response.status(500).json(
                     new InternalServerError()
                 );
@@ -190,6 +207,10 @@ userRoutes.put(
 
             const doesUserExist = await prisma.user.findFirst(
                 {
+                    select: {
+                        id: true
+                    },
+
                     where: {
                         id: userId,
                         deletedAt: null
@@ -203,6 +224,26 @@ userRoutes.put(
                     new InternalServerError()
                 );
             }
+
+            const doesEmailAlreadyExist = await prisma.user.findFirst(
+                {
+                    select: {
+                        id: true
+                    },
+
+                    where: {
+                        id: {
+                            not: userId
+                        },
+                        email: validation.data.email,
+                        deletedAt: null
+                    }
+                }
+            );
+            if (doesEmailAlreadyExist)
+                return response.status(400).json(
+                    new ValidationError(["The user email is already in use"])
+                );
 
             const unsafeUser = await prisma.user.update(
                 {
@@ -241,6 +282,10 @@ userRoutes.delete(
 
             const doesUserExist = await prisma.user.findFirst(
                 {
+                    select: {
+                        id: true
+                    },
+
                     where: {
                         id: userId,
                         deletedAt: null
@@ -257,6 +302,8 @@ userRoutes.delete(
 
             await prisma.user.update(
                 {
+                    select: null,
+
                     where: {
                         id: userId
                     },
