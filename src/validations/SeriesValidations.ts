@@ -120,7 +120,7 @@ export class SeriesValidations {
 
         const orderColumn = columnsToOrderBy.includes(seriesData.orderColumn)
             ? seriesData.orderColumn
-            : undefined;
+            : "mainName";
 
         const orderBy = availableOrders.includes(seriesData.orderBy)
             ? seriesData.orderBy
