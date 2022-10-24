@@ -214,5 +214,24 @@ export class SeriesValidations {
 
         return updateSeriesSchema.safeParse(seriesData);
     }
+
+    inactivate(seriesData: any) {
+        const inactivateSeriesSchema = zod.object(
+            {
+                id: zod
+                    .number(
+                        {
+                            required_error: "The series ID is required",
+                            invalid_type_error: "The series ID must be a number",
+                            description: "The series ID"
+                        }
+                    )
+                    .int("The series ID must be an integer")
+                    .positive("The series ID must be a positive number")
+            }
+        );
+
+        return inactivateSeriesSchema.safeParse(seriesData);
+    }
 }
 /* eslint-enable camelcase */
