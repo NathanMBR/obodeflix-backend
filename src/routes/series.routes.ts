@@ -383,4 +383,67 @@ seriesRoutes.put(
     }
 );
 
+seriesRoutes.delete(
+    "/series/inactivate/:id",
+    ensureAuthentication,
+    ensureModeration,
+    async (request, response) => {
+        try {
+            const authenticationData = request.user;
+            if (!authenticationData) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected user authentication at delete user route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const rawSeriesId = Number(request.params.id);
+            const validation = seriesValidations.inactivate(
+                {
+                    id: rawSeriesId
+                }
+            );
+            if (!validation.success)
+                return response.status(400).json(
+                    new ValidationError(handleZodError(validation.error))
+                );
+
+            const { id: seriesId } = validation.data;
+            const doesSeriesExist = await prisma.series.findFirst(
+                {
+                    select: {
+                        id: true
+                    },
+
+                    where: {
+                        id: seriesId,
+                        deletedAt: null
+                    }
+                }
+            );
+            if (!doesSeriesExist)
+                return response.status(404).json(
+                    new NotFoundError("Series not found")
+                );
+
+            await prisma.series.update(
+                {
+                    data: {
+                        deletedAt: new Date()
+                    },
+
+                    where: {
+                        id: seriesId
+                    }
+                }
+            );
+
+            return response.sendStatus(204);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
 export { seriesRoutes };
