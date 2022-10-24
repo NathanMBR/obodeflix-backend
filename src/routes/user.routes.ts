@@ -266,7 +266,7 @@ userRoutes.put(
 );
 
 userRoutes.delete(
-    "/user/delete",
+    "/user/inactivate",
     ensureAuthentication,
     async (request, response) => {
         try {
