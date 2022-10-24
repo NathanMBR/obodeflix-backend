@@ -20,7 +20,7 @@ export class TagValidations {
             }
         );
 
-        return createTagSchema.parse(tagData);
+        return createTagSchema.safeParse(tagData);
     }
 
     findOne(tagData: any) {
@@ -39,7 +39,7 @@ export class TagValidations {
             }
         );
 
-        return findOneTagSchema.parse(tagData);
+        return findOneTagSchema.safeParse(tagData);
     }
 
     findAll(
@@ -110,7 +110,7 @@ export class TagValidations {
             }
         );
 
-        return updateTagSchema.parse(tagData);
+        return updateTagSchema.safeParse(tagData);
     }
 
     inactivate(tagData: any) {
@@ -129,6 +129,6 @@ export class TagValidations {
             }
         );
 
-        return inactivateTagSchema.parse(tagData);
+        return inactivateTagSchema.safeParse(tagData);
     }
 }
