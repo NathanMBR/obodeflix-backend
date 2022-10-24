@@ -392,7 +392,7 @@ seriesRoutes.delete(
             const authenticationData = request.user;
             if (!authenticationData) {
                 /* eslint-disable-next-line no-console */
-                console.error("Expected user authentication at delete user route");
+                console.error("Expected user authentication at inactivate series route");
                 return response.status(500).json(
                     new InternalServerError()
                 );

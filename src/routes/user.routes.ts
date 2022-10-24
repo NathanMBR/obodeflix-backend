@@ -295,7 +295,7 @@ userRoutes.delete(
             );
             if (!doesUserExist) {
                 /* eslint-disable-next-line no-console */
-                console.error("Expected existent user at delete user route");
+                console.error("Expected existent user at inactivate user route");
                 return response.status(500).json(
                     new InternalServerError()
                 );
