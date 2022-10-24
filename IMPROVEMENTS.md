@@ -1,0 +1,1 @@
+- Throw error instead of returning it (use error handler)
