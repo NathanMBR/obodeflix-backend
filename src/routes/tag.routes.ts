@@ -360,3 +360,5 @@ tagRoutes.delete(
         }
     }
 );
+
+export { tagRoutes };
