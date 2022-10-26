@@ -56,7 +56,7 @@ export class SeasonValidations {
             }
         );
 
-        return createSeasonSchema.parse(seasonData);
+        return createSeasonSchema.safeParse(seasonData);
     }
 
     findOne(seasonData: any) {
@@ -75,7 +75,7 @@ export class SeasonValidations {
             }
         );
 
-        return findOneSeasonSchema.parse(seasonData);
+        return findOneSeasonSchema.safeParse(seasonData);
     }
 
     findAll(
@@ -182,7 +182,7 @@ export class SeasonValidations {
             }
         );
 
-        return updateSeasonSchema.parse(seasonData);
+        return updateSeasonSchema.safeParse(seasonData);
     }
 
     inactivate(seasonData: any) {
@@ -201,6 +201,6 @@ export class SeasonValidations {
             }
         );
 
-        return inactivateSeasonSchema.parse(seasonData);
+        return inactivateSeasonSchema.safeParse(seasonData);
     }
 }
