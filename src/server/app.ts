@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import {
     userRoutes,
-    seriesRoutes
+    seriesRoutes,
+    tagRoutes
 } from "@/routes";
 
 const app = express();
@@ -12,5 +13,6 @@ app.use(cors());
 
 app.use(userRoutes);
 app.use(seriesRoutes);
+app.use(tagRoutes);
 
 export { app };
