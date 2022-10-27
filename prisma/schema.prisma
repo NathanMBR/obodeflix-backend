@@ -104,6 +104,7 @@ model Episode {
   seasonId Int    @db.Integer
   duration Int    @db.Integer
   path     String @db.Text
+  position Int    @db.Integer
 
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
