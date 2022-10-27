@@ -260,10 +260,24 @@ seasonRoutes.put(
             } = validation.data;
 
             const [
+                doesSeasonExist,
                 doesSeriesIdExist,
                 isPositionAlreadyUsed
             ] = await Promise.all(
                 [
+                    prisma.season.findFirst(
+                        {
+                            select: {
+                                id: true
+                            },
+
+                            where: {
+                                id: seasonId,
+                                deletedAt: null
+                            }
+                        }
+                    ),
+
                     prisma.series.findFirst(
                         {
                             select: {
@@ -295,6 +309,11 @@ seasonRoutes.put(
                     )
                 ]
             );
+
+            if (!doesSeasonExist)
+                return response.status(404).json(
+                    new NotFoundError("Season ID not found")
+                );
 
             if (!doesSeriesIdExist)
                 return response.status(404).json(
