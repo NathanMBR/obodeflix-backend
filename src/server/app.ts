@@ -4,7 +4,8 @@ import {
     userRoutes,
     seriesRoutes,
     tagRoutes,
-    seasonRoutes
+    seasonRoutes,
+    episodeRoutes
 } from "@/routes";
 
 const app = express();
@@ -16,5 +17,6 @@ app.use(userRoutes);
 app.use(seriesRoutes);
 app.use(tagRoutes);
 app.use(seasonRoutes);
+app.use(episodeRoutes);
 
 export { app };
