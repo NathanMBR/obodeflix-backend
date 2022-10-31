@@ -56,7 +56,7 @@ userRoutes.post(
 
             const password = await hash(userData.password, 16);
 
-            const user = await prisma.user.create(
+            const unsafeUser = await prisma.user.create(
                 {
                     data: {
                         ...userData,
@@ -65,6 +65,8 @@ userRoutes.post(
                     }
                 }
             );
+
+            const user = removeProperty(unsafeUser, "password");
 
             return response.status(201).json(user);
         } catch (error) {
