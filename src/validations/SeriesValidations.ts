@@ -55,6 +55,15 @@ export class SeriesValidations {
                     )
                     .optional(),
 
+                imageAddress: zod
+                    .string(
+                        {
+                            invalid_type_error: "The image address must be a string",
+                            description: "The series image address"
+                        }
+                    )
+                    .optional(),
+
                 tags: zod
                     .array(
                         zod.number(
@@ -190,6 +199,15 @@ export class SeriesValidations {
                         {
                             invalid_type_error: "The description must be a string",
                             description: "The series description"
+                        }
+                    )
+                    .optional(),
+
+                imageAddress: zod
+                    .string(
+                        {
+                            invalid_type_error: "The image address must be a string",
+                            description: "The series image address"
                         }
                     )
                     .optional(),
