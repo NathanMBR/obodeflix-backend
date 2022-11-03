@@ -45,6 +45,7 @@ seriesRoutes.post(
                 mainNameLanguage,
                 alternativeName,
                 description,
+                imageAddress,
                 tags
             } = validation.data;
 
@@ -77,6 +78,7 @@ seriesRoutes.post(
                         mainNameLanguage,
                         alternativeName,
                         description,
+                        imageAddress,
                         seriesTags: {
                             createMany: {
                                 skipDuplicates: false,
@@ -279,6 +281,7 @@ seriesRoutes.put(
                 mainNameLanguage,
                 alternativeName,
                 description,
+                imageAddress,
                 tags
             } = validation.data;
 
@@ -354,6 +357,7 @@ seriesRoutes.put(
                                 mainNameLanguage,
                                 alternativeName,
                                 description,
+                                imageAddress,
                                 seriesTags: {
                                     createMany: {
                                         skipDuplicates: false,
