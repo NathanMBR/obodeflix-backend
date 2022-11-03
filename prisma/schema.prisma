@@ -46,6 +46,7 @@ model Series {
   alternativeName  String?             @db.VarChar(255)
   mainNameLanguage SeriesNameLanguages
   description      String?             @db.Text
+  imageAddress     String?             @db.VarChar(255)
 
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
