@@ -30,6 +30,7 @@ export class SeriesValidations {
                     )
                     .min(1, "The alternative name must have a minimum of 1 character")
                     .max(255, "The alternative name must have a maximum of 255 characters")
+                    .nullable()
                     .optional(),
 
                 mainNameLanguage: zod
@@ -53,6 +54,7 @@ export class SeriesValidations {
                             description: "The series description"
                         }
                     )
+                    .nullable()
                     .optional(),
 
                 imageAddress: zod
@@ -62,6 +64,7 @@ export class SeriesValidations {
                             description: "The series image address"
                         }
                     )
+                    .nullable()
                     .optional(),
 
                 tags: zod
@@ -179,6 +182,7 @@ export class SeriesValidations {
                     )
                     .min(1, "The alternative name must have a minimum of 1 character")
                     .max(255, "The alternative name must have a maximum of 255 characters")
+                    .nullable()
                     .optional(),
 
                 mainNameLanguage: zod
@@ -201,6 +205,7 @@ export class SeriesValidations {
                             description: "The series description"
                         }
                     )
+                    .nullable()
                     .optional(),
 
                 imageAddress: zod
@@ -210,6 +215,7 @@ export class SeriesValidations {
                             description: "The series image address"
                         }
                     )
+                    .nullable()
                     .optional(),
 
                 tags: zod
