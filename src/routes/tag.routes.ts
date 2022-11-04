@@ -167,9 +167,6 @@ tagRoutes.get(
 
                     prisma.tag.count(
                         {
-                            take,
-                            skip,
-
                             where: {
                                 OR: [
                                     {

@@ -203,9 +203,6 @@ episodeRoutes.get(
 
                     prisma.episode.count(
                         {
-                            take,
-                            skip,
-
                             where: {
                                 name: {
                                     contains: search

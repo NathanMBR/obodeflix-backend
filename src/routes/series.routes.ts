@@ -209,9 +209,6 @@ seriesRoutes.get(
 
                     prisma.series.count(
                         {
-                            take,
-                            skip,
-
                             where: {
                                 OR: [
                                     {

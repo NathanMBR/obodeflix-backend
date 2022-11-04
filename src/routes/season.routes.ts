@@ -195,9 +195,6 @@ seasonRoutes.get(
 
                     prisma.season.count(
                         {
-                            take,
-                            skip,
-
                             where: {
                                 name: {
                                     contains: search
