@@ -248,7 +248,7 @@ seriesRoutes.get(
 );
 
 seriesRoutes.put(
-    "/update/:id",
+    "/series/update/:id",
     ensureAuthentication,
     ensureModeration,
     async (request, response) => {
