@@ -166,6 +166,7 @@ export class SeriesValidations {
                 mainName: zod
                     .string(
                         {
+                            required_error: "The main name is required",
                             invalid_type_error: "The main name must be a string",
                             description: "The series main name"
                         }
@@ -193,6 +194,7 @@ export class SeriesValidations {
                         ],
 
                         {
+                            required_error: "The main name language is required",
                             invalid_type_error: "The main name language must be ENGLISH or JAPANESE",
                             description: "The series main name language"
                         }
@@ -228,6 +230,7 @@ export class SeriesValidations {
                         ),
 
                         {
+                            required_error: "The series tags are required",
                             invalid_type_error: "The series tags must be a number array",
                             description: "The series tags"
                         }
