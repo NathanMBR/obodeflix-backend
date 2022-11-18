@@ -128,12 +128,24 @@ seriesRoutes.get(
 
                     include: {
                         seasons: {
+                            where: {
+                                deletedAt: null
+                            },
+
                             include: {
-                                episodes: true
+                                episodes: {
+                                    where: {
+                                        deletedAt: null
+                                    }
+                                }
                             }
                         },
 
                         seriesTags: {
+                            where: {
+                                deletedAt: null
+                            },
+
                             include: {
                                 tag: true
                             }
