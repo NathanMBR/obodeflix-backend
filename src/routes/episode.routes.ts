@@ -189,7 +189,8 @@ episodeRoutes.get(
 
                             where: {
                                 name: {
-                                    contains: search
+                                    contains: search,
+                                    mode: "insensitive"
                                 },
 
                                 deletedAt: null
@@ -205,7 +206,8 @@ episodeRoutes.get(
                         {
                             where: {
                                 name: {
-                                    contains: search
+                                    contains: search,
+                                    mode: "insensitive"
                                 },
 
                                 deletedAt: null

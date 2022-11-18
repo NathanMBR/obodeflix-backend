@@ -151,7 +151,8 @@ tagRoutes.get(
                                 OR: [
                                     {
                                         name: {
-                                            contains: search
+                                            contains: search,
+                                            mode: "insensitive"
                                         }
                                     }
                                 ],
@@ -171,7 +172,8 @@ tagRoutes.get(
                                 OR: [
                                     {
                                         name: {
-                                            contains: search
+                                            contains: search,
+                                            mode: "insensitive"
                                         }
                                     }
                                 ],

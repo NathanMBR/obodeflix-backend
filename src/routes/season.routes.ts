@@ -181,7 +181,8 @@ seasonRoutes.get(
 
                             where: {
                                 name: {
-                                    contains: search
+                                    contains: search,
+                                    mode: "insensitive"
                                 },
 
                                 deletedAt: null
@@ -197,7 +198,8 @@ seasonRoutes.get(
                         {
                             where: {
                                 name: {
-                                    contains: search
+                                    contains: search,
+                                    mode: "insensitive"
                                 },
 
                                 deletedAt: null

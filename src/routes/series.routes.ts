@@ -199,13 +199,15 @@ seriesRoutes.get(
                                 OR: [
                                     {
                                         mainName: {
-                                            contains: search
+                                            contains: search,
+                                            mode: "insensitive"
                                         }
                                     },
 
                                     {
                                         alternativeName: {
-                                            contains: search
+                                            contains: search,
+                                            mode: "insensitive"
                                         }
                                     }
                                 ],
@@ -225,13 +227,15 @@ seriesRoutes.get(
                                 OR: [
                                     {
                                         mainName: {
-                                            contains: search
+                                            contains: search,
+                                            mode: "insensitive"
                                         }
                                     },
 
                                     {
                                         alternativeName: {
-                                            contains: search
+                                            contains: search,
+                                            mode: "insensitive"
                                         }
                                     }
                                 ],
