@@ -339,16 +339,33 @@ tagRoutes.delete(
                     new NotFoundError("Tag not found")
                 );
 
-            await prisma.tag.update(
-                {
-                    where: {
-                        id: tagId
-                    },
+            await prisma.$transaction(
+                [
+                    prisma.seriesTags.updateMany(
+                        {
+                            where: {
+                                tagId,
+                                deletedAt: null
+                            },
 
-                    data: {
-                        deletedAt: new Date()
-                    }
-                }
+                            data: {
+                                deletedAt: new Date()
+                            }
+                        }
+                    ),
+
+                    prisma.tag.update(
+                        {
+                            where: {
+                                id: tagId
+                            },
+
+                            data: {
+                                deletedAt: new Date()
+                            }
+                        }
+                    )
+                ]
             );
 
             return response.sendStatus(204);
