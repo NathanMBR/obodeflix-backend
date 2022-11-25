@@ -120,7 +120,11 @@ seasonRoutes.get(
         try {
             const rawSeasonId = Number(request.params.id);
 
-            const validation = seasonValidations.findOne(rawSeasonId);
+            const validation = seasonValidations.findOne(
+                {
+                    id: rawSeasonId
+                }
+            );
             if (!validation.success)
                 return response.status(400).json(
                     new ValidationError(handleZodError(validation.error))
