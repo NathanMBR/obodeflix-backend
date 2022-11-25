@@ -133,6 +133,10 @@ seasonRoutes.get(
                     where: {
                         id: seasonId,
                         deletedAt: null
+                    },
+
+                    include: {
+                        series: true
                     }
                 }
             );
