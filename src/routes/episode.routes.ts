@@ -139,6 +139,14 @@ episodeRoutes.get(
 
             const episode = await prisma.episode.findFirst(
                 {
+                    include: {
+                        season: {
+                            include: {
+                                series: true
+                            }
+                        }
+                    },
+
                     where: {
                         id: episodeId,
                         deletedAt: null
