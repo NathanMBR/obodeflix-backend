@@ -92,6 +92,7 @@ export class EpisodeValidations {
             orderColumn: string;
             orderBy: string;
             search: string;
+            seasonId: number;
         }
     ) {
         const availableOrders = [
@@ -118,12 +119,17 @@ export class EpisodeValidations {
 
         const { search } = episodeData;
 
+        const seasonId = Number.isNaN(episodeData.seasonId)
+            ? undefined
+            : episodeData.seasonId;
+
         return {
             take,
             skip,
             orderColumn,
             orderBy,
-            search
+            search,
+            seasonId
         };
     }
 

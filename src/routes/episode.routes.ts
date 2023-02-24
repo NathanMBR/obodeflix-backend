@@ -175,7 +175,8 @@ episodeRoutes.get(
                 quantity: Number(request.query.quantity),
                 orderColumn: String(request.query.orderColumn),
                 orderBy: String(request.query.orderBy),
-                search: String(request.query.search || "")
+                search: String(request.query.search || ""),
+                seasonId: Number(request.query.seasonId)
             };
 
             const {
@@ -183,7 +184,8 @@ episodeRoutes.get(
                 skip,
                 orderColumn,
                 orderBy,
-                search
+                search,
+                seasonId
             } = episodeValidations.findAll(rawPaginationData);
 
             const [
@@ -202,6 +204,10 @@ episodeRoutes.get(
                                     mode: "insensitive"
                                 },
 
+                                season: {
+                                    id: seasonId
+                                },
+
                                 deletedAt: null
                             },
 
@@ -217,6 +223,10 @@ episodeRoutes.get(
                                 name: {
                                     contains: search,
                                     mode: "insensitive"
+                                },
+
+                                season: {
+                                    id: seasonId
                                 },
 
                                 deletedAt: null
