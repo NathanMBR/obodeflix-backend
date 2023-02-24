@@ -85,6 +85,7 @@ export class SeasonValidations {
             orderColumn: string;
             orderBy: string;
             search: string;
+            seriesId: number;
         }
     ) {
         const availableOrders = [
@@ -108,6 +109,10 @@ export class SeasonValidations {
             ? seasonData.orderBy
             : "asc";
 
+        const seriesId = Number.isNaN(seasonData.seriesId)
+            ? undefined
+            : seasonData.seriesId;
+
         const { search } = seasonData;
 
         return {
@@ -115,7 +120,8 @@ export class SeasonValidations {
             skip,
             orderColumn,
             orderBy,
-            search
+            search,
+            seriesId
         };
     }
 

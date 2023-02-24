@@ -166,7 +166,8 @@ seasonRoutes.get(
                 quantity: Number(request.query.quantity),
                 orderColumn: String(request.query.orderColumn),
                 orderBy: String(request.query.orderBy),
-                search: String(request.query.search || "")
+                search: String(request.query.search || ""),
+                seriesId: Number(request.query.seriesId)
             };
 
             const {
@@ -174,7 +175,8 @@ seasonRoutes.get(
                 skip,
                 orderColumn,
                 orderBy,
-                search
+                search,
+                seriesId
             } = seasonValidations.findAll(rawPaginationData);
 
             const [
@@ -193,6 +195,10 @@ seasonRoutes.get(
                                     mode: "insensitive"
                                 },
 
+                                series: {
+                                    id: seriesId
+                                },
+
                                 deletedAt: null
                             },
 
@@ -208,6 +214,10 @@ seasonRoutes.get(
                                 name: {
                                     contains: search,
                                     mode: "insensitive"
+                                },
+
+                                series: {
+                                    id: seriesId
                                 },
 
                                 deletedAt: null
