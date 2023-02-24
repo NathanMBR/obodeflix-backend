@@ -16,6 +16,7 @@ import {
     handleControllerError,
     getPaginatedData
 } from "@/helpers";
+import { SERIES_BASE_URL } from "@/config";
 
 const episodeRoutes = Router();
 
@@ -431,6 +432,63 @@ episodeRoutes.delete(
             );
 
             return response.sendStatus(204);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
+episodeRoutes.get(
+    "/episode/watch/:id",
+    async (request, response) => {
+        try {
+            const rawEpisodeId = Number(request.params.id);
+
+            const validation = episodeValidations.findOne(
+                {
+                    id: rawEpisodeId
+                }
+            );
+            if (!validation.success)
+                return response.status(400).json(
+                    new ValidationError(handleZodError(validation.error))
+                );
+
+            const { id: episodeId } = validation.data;
+
+            const episode = await prisma.episode.findFirst(
+                {
+                    select: {
+                        id: true,
+                        path: true
+                    },
+
+                    where: {
+                        id: episodeId,
+                        deletedAt: null
+                    }
+                }
+            );
+            if (!episode)
+                return response.status(404).json(
+                    new NotFoundError("Episode ID not found")
+                );
+
+            const filename = episode
+                .path
+                .split("/")
+                .pop();
+            const downloadHeader = `attachment; filename=${filename}`;
+
+            return response
+                .status(200)
+                .setHeader("Content-disposition", downloadHeader)
+                .sendFile(
+                    episode.path,
+                    {
+                        root: SERIES_BASE_URL
+                    }
+                );
         } catch (error) {
             return handleControllerError(error, response);
         }
