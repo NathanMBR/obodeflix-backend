@@ -45,7 +45,8 @@ seasonRoutes.post(
                 name,
                 type,
                 seriesId,
-                position
+                position,
+                imageAddress
             } = validation.data;
 
             const [
@@ -98,6 +99,8 @@ seasonRoutes.post(
                         name,
                         type,
                         position,
+                        imageAddress,
+
                         series: {
                             connect: {
                                 id: seriesId
@@ -273,7 +276,8 @@ seasonRoutes.put(
                 name,
                 type,
                 seriesId,
-                position
+                position,
+                imageAddress
             } = validation.data;
 
             const [
@@ -348,6 +352,7 @@ seasonRoutes.put(
                         name,
                         type,
                         position,
+                        imageAddress,
                         series: {
                             connect: {
                                 id: seriesId
