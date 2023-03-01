@@ -52,7 +52,17 @@ export class SeasonValidations {
                             description: "The season position"
                         }
                     )
-                    .int("The season position must be an integer")
+                    .int("The season position must be an integer"),
+
+                imageAddress: zod
+                    .string(
+                        {
+                            invalid_type_error: "The image address must be a string",
+                            description: "The series image address"
+                        }
+                    )
+                    .nullable()
+                    .optional()
             }
         );
 
@@ -184,7 +194,17 @@ export class SeasonValidations {
                             description: "The season position"
                         }
                     )
-                    .int("The season position must be an integer")
+                    .int("The season position must be an integer"),
+
+                imageAddress: zod
+                    .string(
+                        {
+                            invalid_type_error: "The image address must be a string",
+                            description: "The series image address"
+                        }
+                    )
+                    .nullable()
+                    .optional()
             }
         );
 
