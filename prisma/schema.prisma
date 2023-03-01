@@ -85,10 +85,11 @@ model SeriesTags {
 model Season {
   id Int @id @default(autoincrement()) @db.Integer
 
-  name     String      @db.VarChar(255)
-  type     SeasonTypes
-  seriesId Int         @db.Integer
-  position Int         @db.Integer
+  name         String      @db.VarChar(255)
+  type         SeasonTypes
+  seriesId     Int         @db.Integer
+  position     Int         @db.Integer
+  imageAddress String?     @db.VarChar(255)
 
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
