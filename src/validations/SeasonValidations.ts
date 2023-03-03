@@ -18,6 +18,16 @@ export class SeasonValidations {
                     .min(1, "The season name must have a minimum of 1 character")
                     .max(255, "The season name must have a maximum of 255 characters"),
 
+                description: zod
+                    .string(
+                        {
+                            invalid_type_error: "The description must be a string",
+                            description: "The season description"
+                        }
+                    )
+                    .nullable()
+                    .optional(),
+
                 type: zod
                     .enum(
                         [
@@ -159,6 +169,16 @@ export class SeasonValidations {
                     )
                     .min(1, "The season name must have a minimum of 1 character")
                     .max(255, "The season name must have a maximum of 255 characters"),
+
+                description: zod
+                    .string(
+                        {
+                            invalid_type_error: "The description must be a string",
+                            description: "The season description"
+                        }
+                    )
+                    .nullable()
+                    .optional(),
 
                 type: zod
                     .enum(
