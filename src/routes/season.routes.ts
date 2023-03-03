@@ -43,6 +43,7 @@ seasonRoutes.post(
 
             const {
                 name,
+                description,
                 type,
                 seriesId,
                 position,
@@ -97,6 +98,7 @@ seasonRoutes.post(
                 {
                     data: {
                         name,
+                        description,
                         type,
                         position,
                         imageAddress,
@@ -274,6 +276,7 @@ seasonRoutes.put(
             const {
                 id: seasonId,
                 name,
+                description,
                 type,
                 seriesId,
                 position,
@@ -350,6 +353,7 @@ seasonRoutes.put(
                 {
                     data: {
                         name,
+                        description,
                         type,
                         position,
                         imageAddress,
