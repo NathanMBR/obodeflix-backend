@@ -86,6 +86,7 @@ model Season {
   id Int @id @default(autoincrement()) @db.Integer
 
   name         String      @db.VarChar(255)
+  description  String?     @db.Text
   type         SeasonTypes
   seriesId     Int         @db.Integer
   position     Int         @db.Integer
