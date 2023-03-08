@@ -130,20 +130,16 @@ seriesRoutes.get(
                         seasons: {
                             where: {
                                 deletedAt: null
-                            },
-
-                            include: {
-                                episodes: {
-                                    where: {
-                                        deletedAt: null
-                                    }
-                                }
                             }
                         },
 
                         seriesTags: {
                             where: {
-                                deletedAt: null
+                                deletedAt: null,
+
+                                tag: {
+                                    deletedAt: null
+                                }
                             },
 
                             include: {
