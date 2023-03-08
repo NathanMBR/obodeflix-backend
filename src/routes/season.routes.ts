@@ -77,7 +77,11 @@ seasonRoutes.post(
                             where: {
                                 seriesId,
                                 position,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                series: {
+                                    deletedAt: null
+                                }
                             }
                         }
                     )
@@ -141,7 +145,11 @@ seasonRoutes.get(
                 {
                     where: {
                         id: seasonId,
-                        deletedAt: null
+                        deletedAt: null,
+
+                        series: {
+                            deletedAt: null
+                        }
                     },
 
                     include: {
@@ -201,7 +209,8 @@ seasonRoutes.get(
                                 },
 
                                 series: {
-                                    id: seriesId
+                                    id: seriesId,
+                                    deletedAt: null
                                 },
 
                                 deletedAt: null
@@ -222,7 +231,8 @@ seasonRoutes.get(
                                 },
 
                                 series: {
-                                    id: seriesId
+                                    id: seriesId,
+                                    deletedAt: null
                                 },
 
                                 deletedAt: null
@@ -297,7 +307,11 @@ seasonRoutes.put(
 
                             where: {
                                 id: seasonId,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                series: {
+                                    deletedAt: null
+                                }
                             }
                         }
                     ),
@@ -327,7 +341,11 @@ seasonRoutes.put(
                                 },
                                 seriesId,
                                 position,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                series: {
+                                    deletedAt: null
+                                }
                             }
                         }
                     )
@@ -413,7 +431,11 @@ seasonRoutes.delete(
 
                     where: {
                         id: seasonId,
-                        deletedAt: null
+                        deletedAt: null,
+
+                        series: {
+                            deletedAt: null
+                        }
                     }
                 }
             );
