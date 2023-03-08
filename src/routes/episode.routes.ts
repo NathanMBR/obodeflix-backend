@@ -66,7 +66,11 @@ episodeRoutes.post(
 
                             where: {
                                 id: seasonId,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                series: {
+                                    deletedAt: null
+                                }
                             }
                         }
                     ),
@@ -80,7 +84,15 @@ episodeRoutes.post(
                             where: {
                                 seasonId,
                                 position,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                season: {
+                                    deletedAt: null,
+
+                                    series: {
+                                        deletedAt: null
+                                    }
+                                }
                             }
                         }
                     )
@@ -150,7 +162,15 @@ episodeRoutes.get(
 
                     where: {
                         id: episodeId,
-                        deletedAt: null
+                        deletedAt: null,
+
+                        season: {
+                            deletedAt: null,
+
+                            series: {
+                                deletedAt: null
+                            }
+                        }
                     }
                 }
             );
@@ -205,7 +225,12 @@ episodeRoutes.get(
                                 },
 
                                 season: {
-                                    id: seasonId
+                                    id: seasonId,
+                                    deletedAt: null,
+
+                                    series: {
+                                        deletedAt: null
+                                    }
                                 },
 
                                 deletedAt: null
@@ -300,7 +325,15 @@ episodeRoutes.put(
 
                             where: {
                                 id: episodeId,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                season: {
+                                    deletedAt: null,
+
+                                    series: {
+                                        deletedAt: null
+                                    }
+                                }
                             }
                         }
                     ),
@@ -313,7 +346,11 @@ episodeRoutes.put(
 
                             where: {
                                 id: seasonId,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                series: {
+                                    deletedAt: null
+                                }
                             }
                         }
                     ),
@@ -330,7 +367,15 @@ episodeRoutes.put(
                                 },
                                 seasonId,
                                 position,
-                                deletedAt: null
+                                deletedAt: null,
+
+                                season: {
+                                    deletedAt: null,
+
+                                    series: {
+                                        deletedAt: null
+                                    }
+                                }
                             }
                         }
                     )
@@ -416,7 +461,15 @@ episodeRoutes.delete(
 
                     where: {
                         id: episodeId,
-                        deletedAt: null
+                        deletedAt: null,
+
+                        season: {
+                            deletedAt: null,
+
+                            series: {
+                                deletedAt: null
+                            }
+                        }
                     }
                 }
             );
@@ -475,7 +528,15 @@ episodeRoutes.get(
 
                     where: {
                         id: episodeId,
-                        deletedAt: null
+                        deletedAt: null,
+
+                        season: {
+                            deletedAt: null,
+
+                            series: {
+                                deletedAt: null
+                            }
+                        }
                     }
                 }
             );
