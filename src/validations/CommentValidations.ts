@@ -65,6 +65,18 @@ export class CommentValidations {
     update(commentData: any) {
         const updateCommentSchema = zod.object(
             {
+                id: zod
+                    .number(
+                        {
+                            required_error: "The comment ID is required",
+                            invalid_type_error: "The comment ID must be a number",
+                            description: "The comment ID"
+                        }
+                    )
+                    .int("The comment ID must be an integer")
+                    .positive("The comment ID must be a positive number")
+                    .min(1, "The comment ID must be greater than zero"),
+
                 body: zod
                     .string(
                         {
