@@ -154,6 +154,7 @@
         "no-inner-declarations": "off",
         "no-mixed-spaces-and-tabs": "off",
         "no-promise-executor-return": "off",
+        "no-extra-boolean-cast": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-namespace": "off"
     }
