@@ -157,6 +157,28 @@ episodeRoutes.get(
                             include: {
                                 series: true
                             }
+                        },
+
+                        comments: {
+                            orderBy: {
+                                id: "desc"
+                            },
+
+                            where: {
+                                deletedAt: null
+                            },
+
+                            include: {
+                                children: {
+                                    orderBy: {
+                                        id: "asc"
+                                    },
+
+                                    where: {
+                                        deletedAt: null
+                                    }
+                                }
+                            }
                         }
                     },
 

@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "obodeflix"
-    ]
+    ],
+    "cmake.configureOnOpen": false
 }
