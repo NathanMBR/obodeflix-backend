@@ -123,7 +123,7 @@ model Comment {
   id Int @id @default(autoincrement()) @db.Integer
 
   userId Int     @db.Integer
-  body   String? @db.Text
+  body   String @db.Text
 
   parentId  Int? @db.Integer
   seriesId  Int? @db.Integer
