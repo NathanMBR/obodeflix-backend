@@ -37,6 +37,7 @@ model User {
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   deletedAt DateTime? @db.Timestamptz()
+  comments  Comment[]
 }
 
 model Series {
@@ -54,6 +55,7 @@ model Series {
 
   seriesTags SeriesTags[]
   seasons    Season[]
+  comments   Comment[]
 }
 
 model Tag {
@@ -113,5 +115,28 @@ model Episode {
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
   deletedAt DateTime? @db.Timestamptz()
 
-  season Season @relation(fields: [seasonId], references: [id])
+  season   Season    @relation(fields: [seasonId], references: [id])
+  comments Comment[]
+}
+
+model Comment {
+  id Int @id @default(autoincrement()) @db.Integer
+
+  userId Int     @db.Integer
+  body   String? @db.Text
+
+  parentId  Int? @db.Integer
+  seriesId  Int? @db.Integer
+  episodeId Int? @db.Integer
+
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
+  deletedAt DateTime? @db.Timestamptz()
+
+  user User @relation(fields: [userId], references: [id])
+
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  children Comment[] @relation("CommentReplies")
+  series   Series?   @relation(fields: [seriesId], references: [id])
+  episode  Episode?  @relation(fields: [episodeId], references: [id])
 }
