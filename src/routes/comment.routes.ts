@@ -6,7 +6,8 @@ import { CommentValidations } from "@/validations";
 import {
     ValidationError,
     NotFoundError,
-    InternalServerError
+    InternalServerError,
+    ForbiddenError
 } from "@/errors";
 import {
     handleZodError,
@@ -172,96 +173,10 @@ commentRoutes.put(
                     new ValidationError(handleZodError(validation.error))
                 );
 
-            const relationsCount = Object.entries(validation.data)
-                .filter(
-                    ([key]) => key.endsWith("Id")
-                )
-                .reduce(
-                    (previous, [_, value]) => !!value
-                        ? previous + 1
-                        : 0,
-                    0
-                );
-
-            if (relationsCount !== 1)
-                return response.status(400).json(
-                    new ValidationError(["The comment must have exactly one relation"])
-                );
-
             const {
                 id: commentId,
-                body,
-                parentId,
-                seriesId,
-                episodeId
+                body
             } = validation.data;
-
-            if (parentId) {
-                const parentComment = await prisma.comment.findFirst(
-                    {
-                        where: {
-                            id: parentId,
-                            deletedAt: null
-                        },
-
-                        select: {
-                            id: true,
-                            parentId: true,
-                            deletedAt: true
-                        }
-                    }
-                );
-
-                if (!parentComment)
-                    return response.status(404).json(
-                        new NotFoundError("Parent comment ID not found")
-                    );
-
-                if (parentComment.parentId)
-                    return response.status(400).json(
-                        new ValidationError(["The target parent comment is already a reply; please answer the parent comment instead"])
-                    );
-            }
-
-            if (seriesId) {
-                const series = await prisma.series.findFirst(
-                    {
-                        where: {
-                            id: seriesId,
-                            deletedAt: null
-                        },
-
-                        select: {
-                            id: true
-                        }
-                    }
-                );
-
-                if (!series)
-                    return response.status(404).json(
-                        new NotFoundError("Series ID not found")
-                    );
-            }
-
-            if (episodeId) {
-                const episode = await prisma.episode.findFirst(
-                    {
-                        where: {
-                            id: episodeId,
-                            deletedAt: null
-                        },
-
-                        select: {
-                            id: true
-                        }
-                    }
-                );
-
-                if (!episode)
-                    return response.status(404).json(
-                        new NotFoundError("Episode ID not found")
-                    );
-            }
 
             const commentToUpdate = await prisma.comment.findFirst(
                 {
@@ -278,19 +193,20 @@ commentRoutes.put(
                 }
             );
 
-            if (!commentToUpdate || commentToUpdate.userId !== authenticationData.sub)
+            if (!commentToUpdate)
                 return response.status(404).json(
                     new NotFoundError("Comment ID not found")
+                );
+
+            if (commentToUpdate.userId !== authenticationData.sub)
+                return response.status(403).json(
+                    new ForbiddenError("This comment doesn't belong to the currently authenticated user")
                 );
 
             const comment = await prisma.comment.update(
                 {
                     data: {
-                        body,
-                        parentId,
-                        seriesId,
-                        episodeId,
-                        userId: authenticationData.sub
+                        body
                     },
 
                     where: {
