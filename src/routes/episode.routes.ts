@@ -169,7 +169,25 @@ episodeRoutes.get(
                             },
 
                             include: {
+                                user: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        type: true
+                                    }
+                                },
+
                                 children: {
+                                    include: {
+                                        user: {
+                                            select: {
+                                                id: true,
+                                                name: true,
+                                                type: true
+                                            }
+                                        }
+                                    },
+
                                     orderBy: {
                                         id: "asc"
                                     },

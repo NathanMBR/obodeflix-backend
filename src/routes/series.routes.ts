@@ -136,7 +136,25 @@ seriesRoutes.get("/series/get/:id", async (request, response) => {
                     },
 
                     include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                type: true
+                            }
+                        },
+
                         children: {
+                            include: {
+                                user: {
+                                    select: {
+                                        id: true,
+                                        name: true,
+                                        type: true
+                                    }
+                                }
+                            },
+
                             orderBy: {
                                 id: "asc"
                             },
