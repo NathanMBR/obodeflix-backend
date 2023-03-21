@@ -238,7 +238,7 @@ commentRoutes.delete(
 
             const rawCommentId = Number(request.params.id);
 
-            const validation = commentValidations.update(
+            const validation = commentValidations.inactivate(
                 {
                     id: rawCommentId
                 }
