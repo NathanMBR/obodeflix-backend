@@ -28,3 +28,4 @@ It has the name "OBODE" because that's the way some of my friends call me. It co
 - `PORT`: The port where your application will run. The default value is `3000`.
 - `SECRET`: A secret word that will be used to encode your JSON Web Tokens. Make sure you use a strong secret, with a great diversity of letters, numbers and special characters.
 - `SERIES_BASE_URL`: The root folder where all your series are saved.
+- `SERIES_FOLDER_IGNORE_ITEMS`: A stringified JSON-format string array that contains all folders and files the folder importer should ignore.
