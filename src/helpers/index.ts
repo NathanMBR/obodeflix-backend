@@ -4,3 +4,4 @@ export * from "./removeProperty";
 export * from "./removeRepeatedElements";
 export * from "./getPaginatedData";
 export * from "./getPaginationParameters";
+export * from "./getTransformedDuration";
