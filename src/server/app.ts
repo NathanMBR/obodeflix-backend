@@ -6,7 +6,8 @@ import {
     tagRoutes,
     seasonRoutes,
     episodeRoutes,
-    commentRoutes
+    commentRoutes,
+    rawRoutes
 } from "@/routes";
 
 const app = express();
@@ -20,5 +21,6 @@ app.use(tagRoutes);
 app.use(seasonRoutes);
 app.use(episodeRoutes);
 app.use(commentRoutes);
+app.use(rawRoutes);
 
 export { app };
