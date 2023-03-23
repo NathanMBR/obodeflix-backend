@@ -2321,6 +2321,11 @@ caniuse-lite@^1.0.30001359:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001363.tgz#26bec2d606924ba318235944e1193304ea7c4f15"
   integrity sha512-HpQhpzTGGPVMnCjIomjt+jvyUu8vNFo3TaDiZ/RcoTrlOq/5+tC8zHdsbgFB6MxmaY+jCpsH09aD80Bb4Ow3Sg==
 
+catchment@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/catchment/-/catchment-1.0.0.tgz#3061f71be0102710be84328d2f94363a165f8c4b"
+  integrity sha512-6sTXWtTXI+MTHrHVnvZnOM8q2ujbQ+qJF0Mu8NM3jifMBCiZssjol/nBHQqOEiKSZKf1e4+wCrgmTXzWzvZs5w==
+
 chalk@^2.0.0:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -2711,6 +2716,16 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
+dist-exiftool@^10.53.0:
+  version "10.53.0"
+  resolved "https://registry.yarnpkg.com/dist-exiftool/-/dist-exiftool-10.53.0.tgz#8bd17bac1e43deacd81d9adacd0f1e24c690100f"
+  integrity sha512-rWjalcN4eU76iA1wwQjXpdPgiNq8k3cbV+YvXdoJVsnYTVTTtRogY9bbHDhMtU76mFv46JkFuQzZkIsSkf6xfA==
+  dependencies:
+    platform-dependent-modules "0.0.14"
+  optionalDependencies:
+    exiftool.exe "10.53"
+    exiftool.pl "10.53"
+
 doctrine@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-3.0.0.tgz#addebead72a6574db783639dc87a121773973961"
@@ -2962,6 +2977,16 @@ execa@^6.1.0:
     onetime "^6.0.0"
     signal-exit "^3.0.7"
     strip-final-newline "^3.0.0"
+
+exiftool.exe@10.53:
+  version "10.53.0"
+  resolved "https://registry.yarnpkg.com/exiftool.exe/-/exiftool.exe-10.53.0.tgz#22b1ce60fb8db589469d1aa5b0a1fe09a35bc454"
+  integrity sha512-+79RKU+qass902BldGmxTmIfIiEnzYc57JiYawVDu2/Alu20AgsZpyBspdWFENX+xcmFKLLvc8ZcuIxbEiqnSw==
+
+exiftool.pl@10.53:
+  version "10.53.0"
+  resolved "https://registry.yarnpkg.com/exiftool.pl/-/exiftool.pl-10.53.0.tgz#63c1646b3ad0aed1ce1313d7b5d07da4d7b13d84"
+  integrity sha512-IgCT0YmeZAzQK9OVZAXBUIZQ1HU2Ml12mwqyzKKyATqVxUwUghnqS7+gSUzmbfsJsQ1k6uV1OboDPGn7Y4bi5A==
 
 exit@^0.1.2:
   version "0.1.2"
@@ -3500,6 +3525,11 @@ is-plain-obj@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-1.1.0.tgz#71a50c8429dfca773c92a390a4a03b39fcd51d3e"
   integrity sha512-yvkRyxmFKEOQ4pNXCmJG5AEQNlXJS5LaONXo5/cLdTZdWvsZ1ioJEonLGAosKlMWE8lwUy/bJzMjcw8az73+Fg==
+
+is-stream@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
+  integrity sha512-uQPm8kcs47jx38atAcWTVxyltQYoPT68y9aWYdV6yWXSyW8mzSat0TL6CiWdZeCdF3KrAvpVtnHbTv4RN+rqdQ==
 
 is-stream@^2.0.0:
   version "2.0.1"
@@ -4212,6 +4242,11 @@ makeerror@1.0.12:
   dependencies:
     tmpl "1.0.5"
 
+makepromise@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/makepromise/-/makepromise-1.0.0.tgz#bc6bb6a3e06fd706df51c2923b6936fabd70aa7f"
+  integrity sha512-M1q31Q56rlA+gwvmfWj7QFDMIJOuj527fQx/rN3dlzUtsopC9ZjtyekIBW4Fw0HZP6O6Azuw3/Vtk5O59bXz7A==
+
 map-obj@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
@@ -4349,6 +4384,15 @@ negotiator@0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.3.tgz#58e323a72fedc0d6f9cd4d31fe49f51479590ccd"
   integrity sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==
+
+node-exiftool@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/node-exiftool/-/node-exiftool-2.3.0.tgz#d5142d34de6f1683b4655198b648e7e3ee6e80ac"
+  integrity sha512-UZd+k07thqXqp/1udsZghAFrjrsYfP8Kg48I9uv02FZAmT1Wasr8aAPMCObnYkJiWoD/V8UrGjiSzgfNQy9zBw==
+  dependencies:
+    is-stream "1.1.0"
+    restream "1.2.0"
+    wrote "0.6.1"
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -4612,6 +4656,11 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
+platform-dependent-modules@0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/platform-dependent-modules/-/platform-dependent-modules-0.0.14.tgz#3c53d0415d81ce22dcfde15665d0cfd541d41617"
+  integrity sha512-6nOD+RSVmI5Xu1bD8DWetQ3rlgyPq4n5j5esDXn5H+J2XBTvK6t51DP/NZH5CvIlGw3VmOu+7R+WhbYoBDcNEA==
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
@@ -4858,6 +4907,11 @@ restore-cursor@^3.1.0:
   dependencies:
     onetime "^5.1.0"
     signal-exit "^3.0.2"
+
+restream@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/restream/-/restream-1.2.0.tgz#fd13b031a54e80cc65d1878c43149f1b3a40efbb"
+  integrity sha512-RpnOjVCRrc/jO6j1U+E0X9mPjMUUitjEms/IaR18wb8AdPHg46UBmB2aEA6JKgpGbhOcHsDLyurmeZhd4kQXgg==
 
 reusify@^1.0.4:
   version "1.0.4"
@@ -5540,6 +5594,14 @@ write-file-atomic@^4.0.1:
   dependencies:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.7"
+
+wrote@0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/wrote/-/wrote-0.6.1.tgz#eff11efdd6f18424a70baea2df4322af375b8fbe"
+  integrity sha512-5vDwEuRou4yCOzR08bUdY+n/HuOA21L7A4tVsm/kEu2R2APN8tYWvxQbM1hFJk49lR7x47KZMtCu2k8S9WISUA==
+  dependencies:
+    catchment "1.0.0"
+    makepromise "1.0.0"
 
 y18n@^5.0.5:
   version "5.0.8"
