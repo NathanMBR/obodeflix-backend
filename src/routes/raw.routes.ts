@@ -140,7 +140,7 @@ rawRoutes.get(
                 episodesFiles.push(
                     {
                         filename: episodeFile.name,
-                        path: episodePath,
+                        path: episodePath.split(SERIES_BASE_URL)[1],
                         duration: episodeDuration
                     }
                 );
