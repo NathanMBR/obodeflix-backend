@@ -469,4 +469,94 @@ seasonRoutes.delete(
     }
 );
 
+seasonRoutes.get(
+    "/season/recent",
+    async (request, response) => {
+        try {
+            const rawPaginationData = {
+                page: Number(request.query.page),
+                quantity: Number(request.query.quantity),
+                orderColumn: "id",
+                orderBy: "desc",
+                search: String(request.query.search || ""),
+                seriesId: Number(request.query.seriesId)
+            };
+
+            const {
+                take,
+                skip,
+                orderColumn,
+                orderBy,
+                search,
+                seriesId
+            } = seasonValidations.findAll(rawPaginationData);
+
+            const [
+                seasons,
+                seasonsCount
+            ] = await Promise.all(
+                [
+                    prisma.season.findMany(
+                        {
+                            take,
+                            skip,
+
+                            where: {
+                                name: {
+                                    contains: search,
+                                    mode: "insensitive"
+                                },
+
+                                series: {
+                                    id: seriesId,
+                                    deletedAt: null
+                                },
+
+                                excludeFromMostRecent: false,
+
+                                deletedAt: null
+                            },
+
+                            orderBy: {
+                                [orderColumn]: orderBy
+                            }
+                        }
+                    ),
+
+                    prisma.season.count(
+                        {
+                            where: {
+                                name: {
+                                    contains: search,
+                                    mode: "insensitive"
+                                },
+
+                                series: {
+                                    id: seriesId,
+                                    deletedAt: null
+                                },
+
+                                deletedAt: null
+                            }
+                        }
+                    )
+                ]
+            );
+
+            const paginatedSeasons = getPaginatedData(
+                {
+                    take,
+                    skip,
+                    count: seasonsCount,
+                    data: seasons
+                }
+            );
+
+            return response.status(200).json(paginatedSeasons);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
 export { seasonRoutes };
