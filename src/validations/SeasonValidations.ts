@@ -72,6 +72,16 @@ export class SeasonValidations {
                         }
                     )
                     .nullable()
+                    .optional(),
+
+                excludeFromMostRecent: zod
+                    .boolean(
+                        {
+                            invalid_type_error: "The series \"exclude from most recent\" option must be a boolean",
+                            description: "The series \"exclude from most recent\" option"
+                        }
+                    )
+                    .nullable()
                     .optional()
             }
         );
@@ -221,6 +231,16 @@ export class SeasonValidations {
                         {
                             invalid_type_error: "The image address must be a string",
                             description: "The series image address"
+                        }
+                    )
+                    .nullable()
+                    .optional(),
+
+                excludeFromMostRecent: zod
+                    .boolean(
+                        {
+                            invalid_type_error: "The series \"exclude from most recent\" option must be a boolean",
+                            description: "The series \"exclude from most recent\" option"
                         }
                     )
                     .nullable()
