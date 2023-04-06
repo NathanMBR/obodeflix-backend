@@ -87,12 +87,13 @@ model SeriesTags {
 model Season {
   id Int @id @default(autoincrement()) @db.Integer
 
-  name         String      @db.VarChar(255)
-  description  String?     @db.Text
-  type         SeasonTypes
-  seriesId     Int         @db.Integer
-  position     Int         @db.Integer
-  imageAddress String?     @db.VarChar(255)
+  name                  String      @db.VarChar(255)
+  description           String?     @db.Text
+  type                  SeasonTypes
+  seriesId              Int         @db.Integer
+  position              Int         @db.Integer
+  imageAddress          String?     @db.VarChar(255)
+  excludeFromMostRecent Boolean     @default(false) @db.Boolean
 
   createdAt DateTime  @default(now()) @db.Timestamptz()
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
@@ -122,7 +123,7 @@ model Episode {
 model Comment {
   id Int @id @default(autoincrement()) @db.Integer
 
-  userId Int     @db.Integer
+  userId Int    @db.Integer
   body   String @db.Text
 
   parentId  Int? @db.Integer
