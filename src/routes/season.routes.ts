@@ -47,7 +47,8 @@ seasonRoutes.post(
                 type,
                 seriesId,
                 position,
-                imageAddress
+                imageAddress,
+                excludeFromMostRecent
             } = validation.data;
 
             const [
@@ -106,6 +107,7 @@ seasonRoutes.post(
                         type,
                         position,
                         imageAddress,
+                        excludeFromMostRecent: !!excludeFromMostRecent,
 
                         series: {
                             connect: {
@@ -290,7 +292,8 @@ seasonRoutes.put(
                 type,
                 seriesId,
                 position,
-                imageAddress
+                imageAddress,
+                excludeFromMostRecent
             } = validation.data;
 
             const [
@@ -375,6 +378,8 @@ seasonRoutes.put(
                         type,
                         position,
                         imageAddress,
+                        excludeFromMostRecent: !!excludeFromMostRecent,
+
                         series: {
                             connect: {
                                 id: seriesId
