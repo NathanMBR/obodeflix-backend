@@ -19,7 +19,8 @@ export class SeriesValidations {
                         }
                     )
                     .min(1, "The main name must have a minimum of 1 character")
-                    .max(255, "The main name must have a maximum of 255 characters"),
+                    .max(255, "The main name must have a maximum of 255 characters")
+                    .trim(),
 
                 alternativeName: zod
                     .string(
@@ -30,6 +31,7 @@ export class SeriesValidations {
                     )
                     .min(1, "The alternative name must have a minimum of 1 character")
                     .max(255, "The alternative name must have a maximum of 255 characters")
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -54,6 +56,7 @@ export class SeriesValidations {
                             description: "The series description"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -64,6 +67,7 @@ export class SeriesValidations {
                             description: "The series image address"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -172,7 +176,8 @@ export class SeriesValidations {
                         }
                     )
                     .min(1, "The main name must have a minimum of 1 character")
-                    .max(255, "The main name must have a maximum of 255 characters"),
+                    .max(255, "The main name must have a maximum of 255 characters")
+                    .trim(),
 
                 alternativeName: zod
                     .string(
@@ -183,6 +188,7 @@ export class SeriesValidations {
                     )
                     .min(1, "The alternative name must have a minimum of 1 character")
                     .max(255, "The alternative name must have a maximum of 255 characters")
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -207,6 +213,7 @@ export class SeriesValidations {
                             description: "The series description"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -217,6 +224,7 @@ export class SeriesValidations {
                             description: "The series image address"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 

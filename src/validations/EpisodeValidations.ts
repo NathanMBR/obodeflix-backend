@@ -16,7 +16,8 @@ export class EpisodeValidations {
                         }
                     )
                     .min(1, "The episode name must have a minimum of 1 character")
-                    .max(255, "The episode name must have a maximum of 255 characters"),
+                    .max(255, "The episode name must have a maximum of 255 characters")
+                    .trim(),
 
                 seasonId: zod
                     .number(
@@ -50,6 +51,7 @@ export class EpisodeValidations {
                     )
                     .min(1, "The episode path must have a minimum of 1 character")
                     .max(255, "The episode path must have a maximum of 255 characters"),
+                // no trim here because the path can have spaces
 
                 position: zod
                     .number(
@@ -156,7 +158,8 @@ export class EpisodeValidations {
                         }
                     )
                     .min(1, "The episode name must have a minimum of 1 character")
-                    .max(255, "The episode name must have a maximum of 255 characters"),
+                    .max(255, "The episode name must have a maximum of 255 characters")
+                    .trim(),
 
                 seasonId: zod
                     .number(
@@ -190,6 +193,7 @@ export class EpisodeValidations {
                     )
                     .min(1, "The episode path must have a minimum of 1 character")
                     .max(255, "The episode path must have a maximum of 255 characters"),
+                // no trim here because the path can have spaces
 
                 position: zod
                     .number(

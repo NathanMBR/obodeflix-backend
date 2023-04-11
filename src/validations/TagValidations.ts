@@ -17,6 +17,7 @@ export class TagValidations {
                     )
                     .min(1, "The tag name must have a minimum of 1 character")
                     .max(255, "The tag name must have a maximum of 255 characters")
+                    .trim()
             }
         );
 
@@ -107,6 +108,7 @@ export class TagValidations {
                     )
                     .min(1, "The tag name must have a minimum of 1 character")
                     .max(255, "The tag name must have a maximum of 255 characters")
+                    .trim()
             }
         );
 

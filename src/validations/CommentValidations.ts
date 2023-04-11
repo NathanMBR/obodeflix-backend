@@ -13,7 +13,8 @@ export class CommentValidations {
                             description: "The comment body"
                         }
                     )
-                    .min(1, "The comment body must have at least 1 character"),
+                    .min(1, "The comment body must have at least 1 character")
+                    .trim(),
 
                 parentId: zod
                     .number(
@@ -86,6 +87,7 @@ export class CommentValidations {
                         }
                     )
                     .min(1, "The comment body must have at least 1 character")
+                    .trim()
             }
         );
 

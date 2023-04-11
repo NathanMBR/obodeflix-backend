@@ -16,7 +16,8 @@ export class SeasonValidations {
                         }
                     )
                     .min(1, "The season name must have a minimum of 1 character")
-                    .max(255, "The season name must have a maximum of 255 characters"),
+                    .max(255, "The season name must have a maximum of 255 characters")
+                    .trim(),
 
                 description: zod
                     .string(
@@ -25,6 +26,7 @@ export class SeasonValidations {
                             description: "The season description"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -71,6 +73,7 @@ export class SeasonValidations {
                             description: "The series image address"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -178,7 +181,8 @@ export class SeasonValidations {
                         }
                     )
                     .min(1, "The season name must have a minimum of 1 character")
-                    .max(255, "The season name must have a maximum of 255 characters"),
+                    .max(255, "The season name must have a maximum of 255 characters")
+                    .trim(),
 
                 description: zod
                     .string(
@@ -187,6 +191,7 @@ export class SeasonValidations {
                             description: "The season description"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 
@@ -233,6 +238,7 @@ export class SeasonValidations {
                             description: "The series image address"
                         }
                     )
+                    .trim()
                     .nullable()
                     .optional(),
 

@@ -14,7 +14,8 @@ export class UserValidations {
                         }
                     )
                     .min(3, "The name must have a minimum of 3 characters")
-                    .max(255, "The name must have a maximum of 255 characters"),
+                    .max(255, "The name must have a maximum of 255 characters")
+                    .trim(),
 
                 email: zod
                     .string(
@@ -25,7 +26,8 @@ export class UserValidations {
                         }
                     )
                     .email("The email must be in a valid format")
-                    .max(255, "The email must have a maximum of 255 characters"),
+                    .max(255, "The email must have a maximum of 255 characters")
+                    .trim(),
 
                 password: zod
                     .string(
@@ -54,7 +56,8 @@ export class UserValidations {
                         }
                     )
                     .email("The email must be in a valid format")
-                    .max(255, "The email must have a maximum of 255 characters"),
+                    .max(255, "The email must have a maximum of 255 characters")
+                    .trim(),
 
                 password: zod
                     .string(
@@ -83,7 +86,8 @@ export class UserValidations {
                         }
                     )
                     .min(3, "The name must have a minimum of 3 characters")
-                    .max(255, "The name must have a maximum of 255 characters"),
+                    .max(255, "The name must have a maximum of 255 characters")
+                    .trim(),
 
                 email: zod
                     .string(
@@ -95,6 +99,7 @@ export class UserValidations {
                     )
                     .email("The email must be in a valid format")
                     .max(255, "The email must have a maximum of 255 characters")
+                    .trim()
             }
         );
 
