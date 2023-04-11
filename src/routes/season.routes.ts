@@ -536,6 +536,8 @@ seasonRoutes.get(
                                     deletedAt: null
                                 },
 
+                                excludeFromMostRecent: false,
+
                                 deletedAt: null
                             }
                         }
