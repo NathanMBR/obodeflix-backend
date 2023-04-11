@@ -110,6 +110,22 @@ rawRoutes.get(
             const folderPath = path.join(SERIES_BASE_URL, folder);
 
             const folderEpisodesRaw = await fs.readdir(folderPath, { withFileTypes: true });
+
+            // Inject nested folders to cache
+            const nestedFolders = folderEpisodesRaw
+                .filter(content => content.isDirectory())
+                .map(content => `${folder}/${content.name}`);
+
+            // Ensure folders are unique
+            foldersCache = Array.from(
+                new Set(
+                    [
+                        ...foldersCache,
+                        ...nestedFolders
+                    ]
+                )
+            );
+
             const folderEpisodes = folderEpisodesRaw.filter(
                 content => {
                     const isFile = content.isFile();
