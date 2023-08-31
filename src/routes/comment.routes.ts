@@ -14,7 +14,8 @@ import {
     handleControllerError
 } from "@/helpers";
 
-const commentRoutes = Router();
+type RouterReturn = ReturnType<typeof Router>;
+const commentRoutes: RouterReturn = Router();
 
 const commentValidations = new CommentValidations();
 

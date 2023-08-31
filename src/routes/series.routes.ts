@@ -10,7 +10,8 @@ import {
     getPaginatedData
 } from "@/helpers";
 
-const seriesRoutes = Router();
+type RouterReturn = ReturnType<typeof Router>;
+const seriesRoutes: RouterReturn = Router();
 
 const seriesValidations = new SeriesValidations();
 

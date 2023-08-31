@@ -24,7 +24,8 @@ import {
     SERIES_FOLDER_IGNORE_ITEMS
 } from "@/config";
 
-const rawRoutes = Router();
+type RouterReturn = ReturnType<typeof Router>;
+const rawRoutes: RouterReturn = Router();
 
 type Folders = Array<string>;
 let foldersCache: Folders = [];

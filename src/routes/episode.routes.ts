@@ -18,7 +18,8 @@ import {
 } from "@/helpers";
 import { SERIES_BASE_URL } from "@/config";
 
-const episodeRoutes = Router();
+type RouterReturn = ReturnType<typeof Router>;
+const episodeRoutes: RouterReturn = Router();
 
 const episodeValidations = new EpisodeValidations();
 

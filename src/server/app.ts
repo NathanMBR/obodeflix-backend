@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Express } from "express";
 import cors from "cors";
 import {
     userRoutes,
@@ -10,7 +10,7 @@ import {
     rawRoutes
 } from "@/routes";
 
-const app = express();
+const app: Express = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());

@@ -19,7 +19,8 @@ import {
 } from "@/helpers";
 import { ensureAuthentication } from "@/middlewares";
 
-const userRoutes = Router();
+type RouterReturn = ReturnType<typeof Router>;
+const userRoutes: RouterReturn = Router();
 
 const userValidations = new UserValidations();
 

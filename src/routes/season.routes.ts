@@ -14,7 +14,8 @@ import {
     getPaginatedData
 } from "@/helpers";
 
-const seasonRoutes = Router();
+type RouterReturn = ReturnType<typeof Router>;
+const seasonRoutes: RouterReturn = Router();
 
 const seasonValidations = new SeasonValidations();
 

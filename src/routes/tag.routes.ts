@@ -17,7 +17,8 @@ import {
     getPaginatedData
 } from "@/helpers";
 
-const tagRoutes = Router();
+type RouterReturn = ReturnType<typeof Router>;
+const tagRoutes: RouterReturn = Router();
 
 const tagValidations = new TagValidations();
 
