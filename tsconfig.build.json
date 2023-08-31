@@ -3,12 +3,13 @@
 	"exclude": ["./test", "./node_modules", "./build"],
 	"compilerOptions": {
 	  "target": "es2020",
-	  "experimentalDecorators": true,
+	  // "experimentalDecorators": true,
 	  "module": "commonjs",
 	  "rootDir": "./src",
+    "baseUrl": ".",
 	  "paths": {
-		"@/*": ["./src/*"],
-		"@test/*": ["./test/*"]
+      "@/*": ["./src/*"],
+      "@test/*": ["./test/*"]
 	  },
 	  "emitDeclarationOnly": true,
 	  "sourceMap": true,
