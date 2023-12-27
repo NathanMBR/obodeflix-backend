@@ -85,6 +85,61 @@ export class SeasonValidations {
                         }
                     )
                     .nullable()
+                    .optional(),
+
+                tracks: zod
+                    .array(
+                        zod.object(
+                            {
+                                title: zod
+                                    .string(
+                                        {
+                                            description: "The track title",
+                                            required_error: "The track title is required",
+                                            invalid_type_error: "The track title must be a string"
+                                        }
+                                    ),
+
+                                type: zod
+                                    .enum(
+                                        [
+                                            "SUBTITLE",
+                                            "AUDIO"
+                                        ],
+
+                                        {
+                                            description: "The track type",
+                                            required_error: "The track type is required",
+                                            invalid_type_error: "The track type must be a string"
+                                        }
+                                    ),
+
+                                index: zod
+                                    .number(
+                                        {
+                                            description: "The track index",
+                                            required_error: "The track index is required",
+                                            invalid_type_error: "The track index must be a number"
+                                        }
+                                    )
+                                    .int("The track index must be an integer")
+                                    .positive("The track index must be a positive number")
+                            },
+
+                            {
+                                description: "A season track",
+                                required_error: "The season track must be an object",
+                                invalid_type_error: "The season track must be an object"
+                            }
+                        ),
+
+                        {
+                            description: "The season tracks",
+                            required_error: "The season tracks are required",
+                            invalid_type_error: "The season tracks must be an array"
+                        }
+                    )
+                    .nullable()
                     .optional()
             }
         );
@@ -247,6 +302,61 @@ export class SeasonValidations {
                         {
                             invalid_type_error: "The series \"exclude from most recent\" option must be a boolean",
                             description: "The series \"exclude from most recent\" option"
+                        }
+                    )
+                    .nullable()
+                    .optional(),
+
+                tracks: zod
+                    .array(
+                        zod.object(
+                            {
+                                title: zod
+                                    .string(
+                                        {
+                                            description: "The track title",
+                                            required_error: "The track title is required",
+                                            invalid_type_error: "The track title must be a string"
+                                        }
+                                    ),
+
+                                type: zod
+                                    .enum(
+                                        [
+                                            "SUBTITLE",
+                                            "AUDIO"
+                                        ],
+
+                                        {
+                                            description: "The track type",
+                                            required_error: "The track type is required",
+                                            invalid_type_error: "The track type must be a string"
+                                        }
+                                    ),
+
+                                index: zod
+                                    .number(
+                                        {
+                                            description: "The track index",
+                                            required_error: "The track index is required",
+                                            invalid_type_error: "The track index must be a number"
+                                        }
+                                    )
+                                    .int("The track index must be an integer")
+                                    .positive("The track index must be a positive number")
+                            },
+
+                            {
+                                description: "A season track",
+                                required_error: "The season track must be an object",
+                                invalid_type_error: "The season track must be an object"
+                            }
+                        ),
+
+                        {
+                            description: "The season tracks",
+                            required_error: "The season tracks are required",
+                            invalid_type_error: "The season tracks must be an array"
                         }
                     )
                     .nullable()
