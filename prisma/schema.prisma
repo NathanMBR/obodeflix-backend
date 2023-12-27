@@ -26,6 +26,11 @@ enum SeriesNameLanguages {
   JAPANESE
 }
 
+enum TrackTypes {
+  SUBTITLE
+  AUDIO
+}
+
 model User {
   id Int @id @default(autoincrement()) @db.Integer
 
@@ -100,7 +105,23 @@ model Season {
   deletedAt DateTime? @db.Timestamptz()
 
   series   Series    @relation(fields: [seriesId], references: [id])
+  tracks   Track[]
   episodes Episode[]
+}
+
+model Track {
+  id Int @id @default(autoincrement()) @db.Integer
+
+  title    String     @db.VarChar(255)
+  type     TrackTypes
+  index    Int        @db.Integer
+  seasonId Int        @db.Integer
+
+  createdAt DateTime  @default(now()) @db.Timestamptz()
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz()
+  deletedAt DateTime? @db.Timestamptz()
+
+  season Season @relation(fields: [seasonId], references: [id])
 }
 
 model Episode {
