@@ -10,17 +10,17 @@ It has the name "OBODE" because that's the way some of my friends call me. It co
 
 - A PostgreSQL instance (locally or using Docker)
 - Node.js version 16 or higher
-- Yarn 1
+- PNPM
 
 ## Setup
 
 1. Make sure you have a PostgreSQL instance running
 1. Create a `.env` file following the same pattern as in the ".example.env" file
-1. Install the packages with `yarn install`
-1. Run the project with `yarn dev`
-1. Build the project with `yarn build`
-1. Push the Prisma migrations to the database using `yarn prisma migrate deploy`
-1. Start the project with `yarn start:dev`
+1. Install the packages with `pnpm install`
+1. Run the project with `pnpm dev`
+1. Build the project with `pnpm build`
+1. Push the Prisma migrations to the database using `pnpm prisma migrate deploy`
+1. Start the project with `pnpm start:dev`
 
 ## Environment variables
 
