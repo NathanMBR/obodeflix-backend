@@ -156,7 +156,8 @@ seasonRoutes.get(
                     },
 
                     include: {
-                        series: true
+                        series: true,
+                        tracks: true
                     }
                 }
             );
