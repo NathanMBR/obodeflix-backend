@@ -1,1 +1,1 @@
-- Throw error instead of returning it (use error handler)
+- Make sector to check for folders in `BASE_URL` that doesn't have entries in database
