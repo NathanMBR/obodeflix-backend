@@ -49,7 +49,8 @@ seasonRoutes.post(
                 seriesId,
                 position,
                 imageAddress,
-                excludeFromMostRecent
+                excludeFromMostRecent,
+                tracks
             } = validation.data;
 
             const [
@@ -109,6 +110,11 @@ seasonRoutes.post(
                         position,
                         imageAddress,
                         excludeFromMostRecent: !!excludeFromMostRecent,
+                        tracks: {
+                            createMany: {
+                                data: tracks || []
+                            }
+                        },
 
                         series: {
                             connect: {
@@ -295,7 +301,8 @@ seasonRoutes.put(
                 seriesId,
                 position,
                 imageAddress,
-                excludeFromMostRecent
+                excludeFromMostRecent,
+                tracks
             } = validation.data;
 
             const [
@@ -307,7 +314,8 @@ seasonRoutes.put(
                     prisma.season.findFirst(
                         {
                             select: {
-                                id: true
+                                id: true,
+                                tracks: true
                             },
 
                             where: {
@@ -372,26 +380,82 @@ seasonRoutes.put(
                     new ValidationError(["The given series already has a season at this position"])
                 );
 
-            const season = await prisma.season.update(
-                {
-                    data: {
-                        name,
-                        description,
-                        type,
-                        position,
-                        imageAddress,
-                        excludeFromMostRecent: !!excludeFromMostRecent,
+            const season = await prisma.$transaction(
+                async transaction => {
+                    const requestTracks = tracks || [];
+                    const databaseTracks = doesSeasonExist.tracks;
 
-                        series: {
-                            connect: {
-                                id: seriesId
+                    const tracksToCreate = requestTracks.filter(
+                        reqTrack => !databaseTracks.some(
+                            dbTrack =>
+                                reqTrack.title === dbTrack.title &&
+                                reqTrack.type === dbTrack.type &&
+                                reqTrack.index === dbTrack.index
+                        )
+                    );
+
+                    const tracksToDelete = databaseTracks.filter(
+                        dbTrack => !requestTracks.some(
+                            reqTrack =>
+                                reqTrack.title === dbTrack.title &&
+                                reqTrack.type === dbTrack.type &&
+                                reqTrack.index === dbTrack.index
+                        )
+                    );
+
+                    await transaction.track.createMany(
+                        {
+                            data: tracksToCreate.map(
+                                track => {
+                                    return {
+                                        ...track,
+                                        seasonId
+                                    };
+                                }
+                            )
+                        }
+                    );
+
+                    await transaction.track.updateMany(
+                        {
+                            where: {
+                                id: {
+                                    in: tracksToDelete.map(
+                                        track => track.id
+                                    )
+                                }
+                            },
+
+                            data: {
+                                deletedAt: new Date()
                             }
                         }
-                    },
+                    );
 
-                    where: {
-                        id: seasonId
-                    }
+                    const season = await transaction.season.update(
+                        {
+                            data: {
+                                name,
+                                description,
+                                type,
+                                position,
+                                imageAddress,
+                                excludeFromMostRecent: !!excludeFromMostRecent,
+
+                                series: {
+                                    connect: {
+                                        id: seriesId
+                                    }
+                                }
+                            },
+
+                            where: {
+                                id: seasonId
+                            }
+                        }
+                    );
+
+                    return season;
                 }
             );
 
