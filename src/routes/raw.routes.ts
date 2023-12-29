@@ -4,6 +4,8 @@ import fs from "fs/promises";
 import exiftool from "node-exiftool";
 import exifBin from "dist-exiftool";
 
+import { prisma } from "@/database";
+
 const exif = new exiftool.ExiftoolProcess(exifBin);
 
 import {
@@ -168,6 +170,61 @@ rawRoutes.get(
             return response
                 .status(200)
                 .json(episodesFiles);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
+rawRoutes.get(
+    "/raw/folder/unused",
+    ensureAuthentication,
+    ensureModeration,
+    async (request, response) => {
+        try {
+            const authenticationData = request.user;
+            if (!authenticationData) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected user authentication at get all unused folders route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            /* eslint-disable no-await-in-loop */
+            const folders = await getFoldersCache();
+            const unusedFolders: Array<string> = [];
+
+            const unusedFoldersSearch = await Promise.all(
+                folders.map(
+                    folder => prisma.episode.findFirst(
+                        {
+                            select: {
+                                id: true,
+                                path: true
+                            },
+
+                            where: {
+                                path: {
+                                    contains: folder
+                                },
+
+                                deletedAt: null
+                            }
+                        }
+                    )
+                )
+            );
+
+            for (let i = 0; i < unusedFoldersSearch.length; i++) {
+                const isFolderUsed = unusedFoldersSearch[i];
+                if (!isFolderUsed)
+                    unusedFolders.push(folders[i]);
+            }
+
+            return response
+                .status(200)
+                .json(unusedFolders);
         } catch (error) {
             return handleControllerError(error, response);
         }
