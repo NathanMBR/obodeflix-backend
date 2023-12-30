@@ -292,7 +292,12 @@ episodeRoutes.get(
                                 },
 
                                 season: {
-                                    id: seasonId
+                                    id: seasonId,
+                                    deletedAt: null,
+
+                                    series: {
+                                        deletedAt: null
+                                    }
                                 },
 
                                 deletedAt: null
