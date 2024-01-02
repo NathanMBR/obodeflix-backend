@@ -13,7 +13,7 @@
     "build:types": "tsc -p tsconfig.build.json",
     "build:compile": "babel src --extensions .ts --out-dir build --source-maps --copy-files --no-copy-ignored",
     "start": "node --enable-source-maps .",
-    "start:dev": "node -r dotenv/config --enable-source-maps .",
+    "dev": "node -r dotenv/config --enable-source-maps .",
     "qs": "pnpm run build && pnpm run start:dev"
   },
   "dependencies": {
