@@ -139,8 +139,19 @@ export class SeasonValidations {
                             invalid_type_error: "The season tracks must be an array"
                         }
                     )
-                    .nullable()
-                    .optional()
+                    .min(2, "The season must have at least 2 tracks")
+                    .refine(
+                        tracks => tracks.some(track => track.type === "AUDIO"),
+                        {
+                            message: "At least one audio track must be provided"
+                        }
+                    )
+                    .refine(
+                        tracks => tracks.some(track => track.type === "SUBTITLE"),
+                        {
+                            message: "At least one subtitle track must be provided"
+                        }
+                    )
             }
         );
 
@@ -359,8 +370,19 @@ export class SeasonValidations {
                             invalid_type_error: "The season tracks must be an array"
                         }
                     )
-                    .nullable()
-                    .optional()
+                    .min(2, "The season must have at least 2 tracks")
+                    .refine(
+                        tracks => tracks.some(track => track.type === "AUDIO"),
+                        {
+                            message: "At least one audio track must be provided"
+                        }
+                    )
+                    .refine(
+                        tracks => tracks.some(track => track.type === "SUBTITLE"),
+                        {
+                            message: "At least one subtitle track must be provided"
+                        }
+                    )
             }
         );
 
