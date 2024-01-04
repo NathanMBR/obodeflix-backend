@@ -14,7 +14,7 @@
     "build:compile": "babel src --extensions .ts --out-dir build --source-maps --copy-files --no-copy-ignored",
     "start": "node --enable-source-maps .",
     "dev": "node -r dotenv/config --enable-source-maps .",
-    "qs": "pnpm run build && pnpm run start:dev"
+    "qs": "pnpm run build && pnpm run dev"
   },
   "dependencies": {
     "@babel/cli": "^7.18.6",
