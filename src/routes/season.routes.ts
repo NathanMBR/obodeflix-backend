@@ -112,7 +112,7 @@ seasonRoutes.post(
                         excludeFromMostRecent: !!excludeFromMostRecent,
                         tracks: {
                             createMany: {
-                                data: tracks || []
+                                data: tracks
                             }
                         },
 
@@ -382,7 +382,7 @@ seasonRoutes.put(
 
             const season = await prisma.$transaction(
                 async transaction => {
-                    const requestTracks = tracks || [];
+                    const requestTracks = tracks;
                     const databaseTracks = doesSeasonExist.tracks;
 
                     const tracksToCreate = requestTracks.filter(
