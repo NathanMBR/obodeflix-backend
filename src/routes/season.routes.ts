@@ -107,6 +107,18 @@ seasonRoutes.post(
                     new ValidationError(["The given series already has a season at this position"])
                 );
 
+            const uniqueTracks = tracks.filter(
+                (track, trackIndex) => {
+                    for (let i = 0; i < trackIndex; i++) {
+                        const areTracksEqual = checkTracksEquality(track, tracks[i]);
+                        if (areTracksEqual)
+                            return false;
+                    }
+
+                    return true;
+                }
+            );
+
             const season = await prisma.season.create(
                 {
                     data: {
@@ -118,7 +130,7 @@ seasonRoutes.post(
                         excludeFromMostRecent: !!excludeFromMostRecent,
                         tracks: {
                             createMany: {
-                                data: tracks
+                                data: uniqueTracks
                             }
                         },
 
@@ -392,7 +404,17 @@ seasonRoutes.put(
 
             const season = await prisma.$transaction(
                 async transaction => {
-                    const requestTracks = tracks;
+                    const requestTracks = tracks.filter(
+                        (track, trackIndex) => {
+                            for (let i = 0; i < trackIndex; i++) {
+                                const areTracksEqual = checkTracksEquality(track, tracks[i]);
+                                if (areTracksEqual)
+                                    return false;
+                            }
+
+                            return true;
+                        }
+                    );
 
                     const databaseTracks = doesSeasonExist.tracks;
 
