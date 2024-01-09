@@ -337,7 +337,11 @@ seasonRoutes.put(
                         {
                             select: {
                                 id: true,
-                                tracks: true
+                                tracks: {
+                                    where: {
+                                        deletedAt: null
+                                    }
+                                }
                             },
 
                             where: {
