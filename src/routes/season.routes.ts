@@ -1,8 +1,14 @@
 import { Router } from "express";
 
-import { ensureAuthentication, ensureModeration } from "@/middlewares";
 import { prisma } from "@/database";
-import { SeasonValidations } from "@/validations";
+import {
+    ensureAuthentication,
+    ensureModeration
+} from "@/middlewares";
+import {
+    SeasonValidations,
+    checkTracksEquality
+} from "@/validations";
 import {
     ValidationError,
     NotFoundError,
@@ -163,7 +169,11 @@ seasonRoutes.get(
 
                     include: {
                         series: true,
-                        tracks: true
+                        tracks: {
+                            where: {
+                                deletedAt: null
+                            }
+                        }
                     }
                 }
             );
@@ -383,46 +393,31 @@ seasonRoutes.put(
             const season = await prisma.$transaction(
                 async transaction => {
                     const requestTracks = tracks;
+
                     const databaseTracks = doesSeasonExist.tracks;
 
+                    const tracksToKeep = databaseTracks.filter(
+                        databaseTrack => requestTracks.some(
+                            requestTrack => checkTracksEquality(requestTrack, databaseTrack)
+                        )
+                    );
+
                     const tracksToCreate = requestTracks.filter(
-                        reqTrack => !databaseTracks.some(
-                            dbTrack =>
-                                reqTrack.title === dbTrack.title &&
-                                reqTrack.type === dbTrack.type &&
-                                reqTrack.index === dbTrack.index
+                        requestTrack => !databaseTracks.some(
+                            databaseTrack => checkTracksEquality(requestTrack, databaseTrack)
                         )
-                    );
-
-                    const tracksToDelete = databaseTracks.filter(
-                        dbTrack => !requestTracks.some(
-                            reqTrack =>
-                                reqTrack.title === dbTrack.title &&
-                                reqTrack.type === dbTrack.type &&
-                                reqTrack.index === dbTrack.index
-                        )
-                    );
-
-                    await transaction.track.createMany(
-                        {
-                            data: tracksToCreate.map(
-                                track => {
-                                    return {
-                                        ...track,
-                                        seasonId
-                                    };
-                                }
-                            )
-                        }
                     );
 
                     await transaction.track.updateMany(
                         {
                             where: {
-                                id: {
-                                    in: tracksToDelete.map(
-                                        track => track.id
-                                    )
+                                seasonId,
+                                NOT: {
+                                    id: {
+                                        in: tracksToKeep.map(
+                                            track => track.id
+                                        )
+                                    }
                                 }
                             },
 
@@ -432,7 +427,20 @@ seasonRoutes.put(
                         }
                     );
 
-                    const season = await transaction.season.update(
+                    await transaction.track.createMany(
+                        {
+                            data: tracksToCreate.map(
+                                track => (
+                                    {
+                                        ...track,
+                                        seasonId
+                                    }
+                                )
+                            )
+                        }
+                    );
+
+                    const updatedSeason = await transaction.season.update(
                         {
                             data: {
                                 name,
@@ -455,7 +463,7 @@ seasonRoutes.put(
                         }
                     );
 
-                    return season;
+                    return updatedSeason;
                 }
             );
 
