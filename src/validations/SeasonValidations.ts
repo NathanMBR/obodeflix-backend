@@ -123,7 +123,7 @@ export class SeasonValidations {
                                         }
                                     )
                                     .int("The track index must be an integer")
-                                    .positive("The track index must be a positive number")
+                                    .nonnegative("The track index must be a non-negative number")
                             },
 
                             {
@@ -354,7 +354,7 @@ export class SeasonValidations {
                                         }
                                     )
                                     .int("The track index must be an integer")
-                                    .positive("The track index must be a positive number")
+                                    .nonnegative("The track index must be a non-negative number")
                             },
 
                             {
