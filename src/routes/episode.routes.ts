@@ -4,8 +4,6 @@ import {
     ensureAuthentication,
     ensureModeration
 } from "@/middlewares";
-import { prisma } from "@/database";
-import { EpisodeValidations } from "@/validations";
 import {
     ValidationError,
     NotFoundError,
@@ -14,8 +12,11 @@ import {
 import {
     handleZodError,
     handleControllerError,
-    getPaginatedData
+    getPaginatedData,
+    getTracks
 } from "@/helpers";
+import { prisma } from "@/database";
+import { EpisodeValidations } from "@/validations";
 import { SERIES_BASE_URL } from "@/config";
 
 type RouterReturn = ReturnType<typeof Router>;
@@ -606,6 +607,64 @@ episodeRoutes.get(
                         root: SERIES_BASE_URL
                     }
                 );
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
+episodeRoutes.get(
+    "/episode/tracks/:id",
+    ensureAuthentication,
+    ensureModeration,
+    async (request, response) => {
+        try {
+            const authenticationData = request.user;
+            if (!authenticationData) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected user authentication at create season route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const rawEpisodeId = Number(request.params.id);
+
+            const validation = episodeValidations.findOne(
+                {
+                    id: rawEpisodeId
+                }
+            );
+
+            if (!validation.success)
+                return response.status(400).json(
+                    new ValidationError(handleZodError(validation.error))
+                );
+
+            const { id: episodeId } = validation.data;
+
+            const episode = await prisma.episode.findUnique(
+                {
+                    where: {
+                        id: episodeId
+                    },
+
+                    select: {
+                        id: true,
+                        path: true,
+                        deletedAt: true
+                    }
+                }
+            );
+
+            if (!episode || !!episode.deletedAt)
+                return response.status(404).json(
+                    new NotFoundError("episode")
+                );
+
+            const tracks = await getTracks(episode.path);
+
+            return response.status(200).json(tracks);
         } catch (error) {
             return handleControllerError(error, response);
         }
