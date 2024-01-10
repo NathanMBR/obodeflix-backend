@@ -6,3 +6,4 @@ export * from "./getPaginatedData";
 export * from "./getPaginationParameters";
 export * from "./getTransformedDuration";
 export * from "./getTracks";
+export * from "./readFoldersRecursively";
