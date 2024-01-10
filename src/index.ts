@@ -1,8 +1,15 @@
 import { app } from "./server";
 import { PORT } from "@/config";
+import { prisma } from "./database";
 
-app.listen(
-    PORT,
-    /* eslint-disable no-console */
-    () => console.log(`Server running on port ${PORT}`)
-);
+const main = async () => {
+    await prisma.$connect();
+
+    app.listen(
+        PORT,
+        /* eslint-disable-next-line no-console */
+        () => console.log(`Server running on port ${PORT}`)
+    );
+};
+
+main();
