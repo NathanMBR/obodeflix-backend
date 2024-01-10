@@ -19,7 +19,8 @@ import {
 } from "@/errors";
 import {
     getTransformedDuration,
-    handleControllerError
+    handleControllerError,
+    readFoldersRecursively
 } from "@/helpers";
 import {
     SERIES_BASE_URL,
@@ -30,15 +31,11 @@ type RouterReturn = ReturnType<typeof Router>;
 const rawRoutes: RouterReturn = Router();
 
 type Folders = Array<string>;
-let foldersCache: Folders = [];
+const foldersCache: Folders = [];
 const getFoldersCache = async (): Promise<Folders> => {
     if (!foldersCache.length) {
-        const seriesListRaw = await fs.readdir(SERIES_BASE_URL);
-        const itemsToExclude = SERIES_FOLDER_IGNORE_ITEMS;
-
-        foldersCache = seriesListRaw.filter(
-            series => !itemsToExclude.includes(series) && !series.endsWith(".")
-        );
+        const folders = await readFoldersRecursively(SERIES_BASE_URL, SERIES_FOLDER_IGNORE_ITEMS);
+        foldersCache.push(...folders);
     }
 
     return foldersCache;
@@ -103,7 +100,6 @@ rawRoutes.get(
                 );
 
             const folders = await getFoldersCache();
-
             const folder = folders[folderIndex];
             if (!folder)
                 return response.status(404).json(
@@ -111,23 +107,7 @@ rawRoutes.get(
                 );
 
             const folderPath = path.join(SERIES_BASE_URL, folder);
-
             const folderEpisodesRaw = await fs.readdir(folderPath, { withFileTypes: true });
-
-            // Inject nested folders to cache
-            const nestedFolders = folderEpisodesRaw
-                .filter(content => content.isDirectory())
-                .map(content => `${folder}/${content.name}`);
-
-            // Ensure folders are unique
-            foldersCache = Array.from(
-                new Set(
-                    [
-                        ...foldersCache,
-                        ...nestedFolders
-                    ]
-                )
-            );
 
             const folderEpisodes = folderEpisodesRaw.filter(
                 content => {
