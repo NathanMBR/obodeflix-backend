@@ -659,7 +659,7 @@ episodeRoutes.get(
 
             if (!episode || !!episode.deletedAt)
                 return response.status(404).json(
-                    new NotFoundError("episode")
+                    new NotFoundError("Episode ID not found")
                 );
 
             const tracks = await getTracks(episode.path);
