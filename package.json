@@ -7,7 +7,7 @@
   "author": "Nathan Murillo <nathanmurillodeoliveira@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "postinstall": "husky install",
+    "postinstall": "chmod -R 777 ./node_modules/.pnpm && husky install",
     "build": "concurrently pnpm:build:*",
     "lint": "eslint --fix",
     "build:types": "tsc -p tsconfig.build.json",
