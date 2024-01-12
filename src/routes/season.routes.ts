@@ -20,7 +20,7 @@ import {
     getPaginatedData
 } from "@/helpers";
 
-type RouterReturn = ReturnType<typeof Router>;
+type RouterReturn = ReturnType<typeof Router>
 const seasonRoutes: RouterReturn = Router();
 
 const seasonValidations = new SeasonValidations();
@@ -655,6 +655,51 @@ seasonRoutes.get(
             );
 
             return response.status(200).json(paginatedSeasons);
+        } catch (error) {
+            return handleControllerError(error, response);
+        }
+    }
+);
+
+seasonRoutes.get(
+    "/season/no-tracks",
+    ensureAuthentication,
+    ensureModeration,
+    async (request, response) => {
+        try {
+            const authenticationData = request.user;
+            if (!authenticationData) {
+                /* eslint-disable-next-line no-console */
+                console.error("Expected user authentication at no tracks seasons route");
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const seasons = await prisma.season.findMany(
+                {
+                    select: {
+                        id: true,
+                        name: true
+                    },
+
+                    where: {
+                        deletedAt: null,
+
+                        tracks: {
+                            none: {
+                                deletedAt: null
+                            }
+                        }
+                    },
+
+                    orderBy: {
+                        name: "asc"
+                    }
+                }
+            );
+
+            return response.status(200).json(seasons);
         } catch (error) {
             return handleControllerError(error, response);
         }
