@@ -10,13 +10,12 @@ ffmpeg.setFfmpegPath(ffmpegBinaryPath);
 ffmpeg.setFfprobePath(ffprobeBinaryPath);
 
 type Track = {
-    index: number;
     title: string;
+    type: "VIDEO" | "AUDIO" | "SUBTITLE";
+    index: number;
 }
 
-type TracksList = Record<"video" | "audio" | "subtitle", Array<Track>>
-
-export const getTracks = async (videoPath: string) => new Promise<TracksList>(
+export const getTracks = async (videoPath: string) => new Promise<Array<Track>>(
     (resolve, reject) => {
         const fileAbsolutePath = path.join(SERIES_BASE_URL, videoPath);
 
@@ -35,8 +34,9 @@ export const getTracks = async (videoPath: string) => new Promise<TracksList>(
                     .map(
                         stream => {
                             const videoTrack = {
-                                index: stream.index,
-                                title: stream.tags.title || "unknown"
+                                title: stream.tags.title as string || "unknown",
+                                type: "VIDEO" as const,
+                                index: stream.index
                             };
 
                             return videoTrack;
@@ -48,8 +48,9 @@ export const getTracks = async (videoPath: string) => new Promise<TracksList>(
                     .map(
                         stream => {
                             const audioTrack = {
-                                index: stream.index - rawVideoTracks.length,
-                                title: stream.tags.title || "unknown"
+                                title: stream.tags.title as string || "unknown",
+                                type: "AUDIO" as const,
+                                index: stream.index - rawVideoTracks.length
                             };
 
                             return audioTrack;
@@ -61,19 +62,20 @@ export const getTracks = async (videoPath: string) => new Promise<TracksList>(
                     .map(
                         stream => {
                             const subtitleTrack = {
-                                index: stream.index - rawVideoTracks.length - rawAudioTracks.length,
-                                title: stream.tags.title || "unknown"
+                                title: stream.tags.title as string || "unknown",
+                                type: "SUBTITLE" as const,
+                                index: stream.index - rawVideoTracks.length - rawAudioTracks.length
                             };
 
                             return subtitleTrack;
                         }
                     );
 
-                const tracksList = {
-                    video: videoTracks,
-                    audio: audioTracks,
-                    subtitle: subtitleTracks
-                };
+                const tracksList: Array<Track> = [
+                    ...videoTracks,
+                    ...audioTracks,
+                    ...subtitleTracks
+                ];
 
                 return resolve(tracksList);
             }
