@@ -15,6 +15,28 @@ type Track = {
     index: number;
 }
 
+const getTrackTitle = (title?: string, languageAlias?: string): string => {
+    const defaultTitle = "unknown";
+    const languages = {
+        por: "Português",
+        spa: "Espanhol",
+        jpn: "Japonês",
+        eng: "Inglês"
+    };
+
+    if (title)
+        return title;
+
+    if (!languageAlias)
+        return defaultTitle;
+
+    const language = languages[languageAlias];
+    if (!language)
+        return defaultTitle;
+
+    return language;
+};
+
 export const getTracks = async (videoPath: string) => new Promise<Array<Track>>(
     (resolve, reject) => {
         const fileAbsolutePath = path.join(SERIES_BASE_URL, videoPath);
@@ -34,7 +56,7 @@ export const getTracks = async (videoPath: string) => new Promise<Array<Track>>(
                     .map(
                         stream => {
                             const videoTrack = {
-                                title: stream.tags.title as string || "unknown",
+                                title: getTrackTitle(stream.tags.title, stream.tags.language),
                                 type: "VIDEO" as const,
                                 index: stream.index
                             };
@@ -48,7 +70,7 @@ export const getTracks = async (videoPath: string) => new Promise<Array<Track>>(
                     .map(
                         stream => {
                             const audioTrack = {
-                                title: stream.tags.title as string || "unknown",
+                                title: getTrackTitle(stream.tags.title, stream.tags.language),
                                 type: "AUDIO" as const,
                                 index: stream.index - rawVideoTracks.length
                             };
@@ -62,7 +84,7 @@ export const getTracks = async (videoPath: string) => new Promise<Array<Track>>(
                     .map(
                         stream => {
                             const subtitleTrack = {
-                                title: stream.tags.title as string || "unknown",
+                                title: getTrackTitle(stream.tags.title, stream.tags.language),
                                 type: "SUBTITLE" as const,
                                 index: stream.index - rawVideoTracks.length - rawAudioTracks.length
                             };
