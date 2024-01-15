@@ -431,7 +431,7 @@ seasonRoutes.put(
                     if (!areTracksIndexesUnique)
                         return {
                             success: false as const,
-                            status: 404,
+                            status: 400,
                             error: new ValidationError(["The given tracks have repeated indexes"])
                         };
 
