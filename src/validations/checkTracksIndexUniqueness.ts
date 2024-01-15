@@ -10,9 +10,16 @@ type TrackDatabaseFields =
 type ComparableTrack = Track | Omit<Track, TrackDatabaseFields>
 
 export const checkTracksIndexUniqueness = (tracks: Array<ComparableTrack>) => {
-    const indexes = tracks.map(track => track.index);
-    const uniqueIndexes = new Set(indexes);
-    const areTracksIndexesUnique = indexes.length === uniqueIndexes.size;
+    const audioIndexes = tracks.filter(track => track.type === "AUDIO").map(track => track.index);
+    const subtitleIndexes = tracks.filter(track => track.type === "SUBTITLE").map(track => track.index);
 
-    return areTracksIndexesUnique;
+    const uniqueAudioIndexes = new Set(audioIndexes);
+    const uniqueSubtitleIndexes = new Set(subtitleIndexes);
+
+    const areAudioIndexesUnique = uniqueAudioIndexes.size === audioIndexes.length;
+    const areSubtitleIndexesUnique = uniqueSubtitleIndexes.size === subtitleIndexes.length;
+
+    const areIndexesUnique = areAudioIndexesUnique && areSubtitleIndexesUnique;
+
+    return areIndexesUnique;
 };
