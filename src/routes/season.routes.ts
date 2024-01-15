@@ -7,7 +7,8 @@ import {
 } from "@/middlewares";
 import {
     SeasonValidations,
-    checkTracksEquality
+    checkTracksEquality,
+    checkTracksIndexUniqueness
 } from "@/validations";
 import {
     ValidationError,
@@ -118,6 +119,12 @@ seasonRoutes.post(
                     return true;
                 }
             );
+
+            const areTracksIndexesUnique = checkTracksIndexUniqueness(uniqueTracks);
+            if (!areTracksIndexesUnique)
+                return response.status(400).json(
+                    new ValidationError(["The given tracks have repeated indexes"])
+                );
 
             const season = await prisma.season.create(
                 {
@@ -406,7 +413,7 @@ seasonRoutes.put(
                     new ValidationError(["The given series already has a season at this position"])
                 );
 
-            const season = await prisma.$transaction(
+            const transactionResult = await prisma.$transaction(
                 async transaction => {
                     const requestTracks = tracks.filter(
                         (track, trackIndex) => {
@@ -419,6 +426,14 @@ seasonRoutes.put(
                             return true;
                         }
                     );
+
+                    const areTracksIndexesUnique = checkTracksIndexUniqueness(requestTracks);
+                    if (!areTracksIndexesUnique)
+                        return {
+                            success: false as const,
+                            status: 404,
+                            error: new ValidationError(["The given tracks have repeated indexes"])
+                        };
 
                     const databaseTracks = doesSeasonExist.tracks;
 
@@ -489,11 +504,17 @@ seasonRoutes.put(
                         }
                     );
 
-                    return updatedSeason;
+                    return {
+                        success: true as const,
+                        season: updatedSeason
+                    };
                 }
             );
 
-            return response.status(200).json(season);
+            if (!transactionResult.success)
+                return response.status(transactionResult.status).json(transactionResult.error);
+
+            return response.status(200).json(transactionResult.season);
         } catch (error) {
             return handleControllerError(error, response);
         }
