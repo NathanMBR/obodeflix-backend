@@ -6,3 +6,4 @@ export * from "./EpisodeValidations";
 export * from "./CommentValidations";
 
 export * from "./checkTracksEquality";
+export * from "./checkTracksIndexUniqueness";
