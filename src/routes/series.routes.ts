@@ -286,77 +286,163 @@ seriesRoutes.put(
                 alternativeName,
                 description,
                 imageAddress,
-                tags
+                tags,
+                seasonsOrder
             } = validation.data;
 
-            const [doesSeriesExist, doesAllTagsExist] = await Promise.all([
-                prisma.series.findFirst({
-                    select: {
-                        id: true
-                    },
+            const uniqueSeasonsOrderIds = new Set(
+                seasonsOrder.map(seasonOrder => seasonOrder.id)
+            );
 
-                    where: {
-                        id: seriesId,
-                        deletedAt: null
-                    }
-                }),
+            const uniqueSeasonOrderPositions = new Set(
+                seasonsOrder.map(seasonOrder => seasonOrder.position)
+            );
 
-                Promise.all(
-                    tags.map((tagId) =>
-                        prisma.tag.findFirst({
+            const areSeasonsOrderIdsUnique = uniqueSeasonsOrderIds.size === seasonsOrder.length;
+            if (!areSeasonsOrderIdsUnique)
+                return response
+                    .status(400)
+                    .json(new ValidationError(["Seasons order IDs must be unique"]));
+
+            const areSeasonsOrderPositionsUnique = uniqueSeasonOrderPositions.size === seasonsOrder.length;
+            if (!areSeasonsOrderPositionsUnique)
+                return response
+                    .status(400)
+                    .json(new ValidationError(["Seasons order positions must be unique"]));
+
+            const [
+                doesSeriesExist,
+                doesAllTagsExist,
+                doesAllSeasonsExist
+            ] = await Promise.all(
+                [
+                    prisma.series.findFirst(
+                        {
                             select: {
                                 id: true
                             },
 
                             where: {
-                                id: tagId,
+                                id: seriesId,
                                 deletedAt: null
                             }
-                        })
+                        }
+                    ),
+
+                    Promise.all(
+                        tags.map(
+                            tagId => prisma.tag.findFirst(
+                                {
+                                    select: {
+                                        id: true
+                                    },
+
+                                    where: {
+                                        id: tagId,
+                                        deletedAt: null
+                                    }
+                                }
+                            )
+                        )
+                    ),
+
+                    Promise.all(
+                        seasonsOrder.map(
+                            seasonOrder => prisma.season.findFirst(
+                                {
+                                    select: {
+                                        id: true
+                                    },
+
+                                    where: {
+                                        id: seasonOrder.id,
+                                        deletedAt: null
+                                    }
+                                }
+                            )
+                        )
                     )
-                )
-            ]);
+                ]
+            );
 
             if (!doesSeriesExist)
-                return response.status(404).json(new NotFoundError("Series not found"));
+                return response
+                    .status(404)
+                    .json(new NotFoundError("Series not found"));
 
-            if (doesAllTagsExist.some((tag) => !tag))
-                return response.status(404).json(new NotFoundError("Tag not found"));
+            if (doesAllTagsExist.some(tag => !tag))
+                return response
+                    .status(404)
+                    .json(new NotFoundError("Tag not found"));
 
-            const [_deletedSeriesTags, series] = await prisma.$transaction([
-                prisma.seriesTags.updateMany({
-                    data: {
-                        deletedAt: new Date()
-                    },
+            if (doesAllSeasonsExist.some(season => !season))
+                return response
+                    .status(404)
+                    .json(new NotFoundError("Season not found"));
 
-                    where: {
-                        seriesId,
-                        deletedAt: null
-                    }
-                }),
+            const [_deletedSeriesTags, series] = await prisma.$transaction(
+                [
+                    prisma.seriesTags.updateMany(
+                        {
+                            data: {
+                                deletedAt: new Date()
+                            },
 
-                prisma.series.update({
-                    data: {
-                        mainName,
-                        mainNameLanguage,
-                        alternativeName,
-                        description,
-                        imageAddress,
-                        seriesTags: {
-                            createMany: {
-                                skipDuplicates: false,
-                                data: tags.map((tagId) => ({
-                                    tagId
-                                }))
+                            where: {
+                                seriesId,
+                                deletedAt: null
                             }
                         }
-                    },
+                    ),
 
-                    where: {
-                        id: seriesId
-                    }
-                })
-            ]);
+                    prisma.series.update(
+                        {
+                            data: {
+                                mainName,
+                                mainNameLanguage,
+                                alternativeName,
+                                description,
+                                imageAddress,
+                                seriesTags: {
+                                    createMany: {
+                                        skipDuplicates: false,
+                                        data: tags.map(
+                                            tagId => (
+                                                {
+                                                    tagId
+                                                }
+                                            )
+                                        )
+                                    }
+                                }
+                            },
+
+                            where: {
+                                id: seriesId
+                            }
+                        }
+                    ),
+
+                    ...seasonsOrder.map(
+                        seasonOrder => prisma.season.update(
+                            {
+                                where: {
+                                    id: seasonOrder.id
+                                },
+
+                                data: {
+                                    position: seasonOrder.position
+                                },
+
+                                select: {
+                                    id: true,
+                                    position: true
+                                }
+                            }
+                        )
+                    )
+                ]
+            );
 
             return response.status(200).json(series);
         } catch (error) {
