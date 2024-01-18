@@ -243,7 +243,41 @@ export class SeriesValidations {
                             description: "The series tags"
                         }
                     )
-                    .transform(removeRepeatedElements)
+                    .transform(removeRepeatedElements),
+
+                seasonsOrder: zod.array(
+                    zod.object(
+                        {
+                            id: zod.number(
+                                {
+                                    required_error: "The season ID is required",
+                                    invalid_type_error: "The season ID must be a number",
+                                    description: "The season ID"
+                                }
+                            ),
+
+                            position: zod.number(
+                                {
+                                    required_error: "The season position is required",
+                                    invalid_type_error: "The season position must be a number",
+                                    description: "The season position"
+                                }
+                            )
+                        },
+
+                        {
+                            required_error: "The season order is required",
+                            invalid_type_error: "The season order must be an object",
+                            description: "The season order"
+                        }
+                    ),
+
+                    {
+                        required_error: "The seasons order are required",
+                        invalid_type_error: "The seasons order must be an array",
+                        description: "The seasons order"
+                    }
+                )
             }
         );
 
