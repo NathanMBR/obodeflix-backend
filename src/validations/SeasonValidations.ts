@@ -195,6 +195,7 @@ export class SeasonValidations {
         const columnsToOrderBy = [
             "id",
             "name",
+            "position",
             "updatedAt"
         ];
 
