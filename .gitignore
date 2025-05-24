@@ -5,3 +5,4 @@ test/coverage/
 *.env
 !.example.env
 *.log
+*.sql
