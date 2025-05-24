@@ -596,7 +596,17 @@ episodeRoutes.get(
                 .path
                 .split("/")
                 .pop();
-            const downloadHeader = `attachment; filename=${filename}`;
+
+            if (!filename) {
+                /* eslint-disable-next-line no-console */
+                console.error(`Unexpected missing file name of episode ID ${episodeId}`);
+
+                return response.status(500).json(
+                    new InternalServerError()
+                );
+            }
+
+            const downloadHeader = `attachment; filename=${filename.replace(/[^\x20-\x7E\u00A0-\u024F]/g, "")}`;
 
             return response
                 .status(200)
